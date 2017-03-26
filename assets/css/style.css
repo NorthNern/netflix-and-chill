@@ -23,9 +23,8 @@ body {
 	opacity: 0.1;
 }*/
 
-.col-lg-12 {
-	padding: 0;
-	background-color: white;
+.panel.panel-default {
+/*	background-color: white;*/
 	opacity: 0.7;
 }
 
