@@ -119,18 +119,28 @@ $(document).ready(function(){
         method: 'GET'
       }).done(function(response) {
         console.log(response) 
-    
+
+        $('#movies-appear-here').empty();
+        
         for (var i = 0; i < 5; i++) {
-          $('#movies-appear-here').append('<div class="one">' + '<li>' + response.results[i].title + '</li>' + '</div>');
-          $('#movies-appear-here').append('<div class="two">'+ '<img src=' + posterPath + response.results[i].poster_path + '>' + '</div>');
-          $('#movies-appear-here').append('<div class="three">' + response.results[i].overview + '</div>');
-          //$('.one, .two, .three').wrapAll('<div class="wrap">');
+
+          
+    
+            $("<div />", { "class":"wrapper", id:"movie"+i })
+               .append($('<div class="title">' + '<li>' + response.results[i].title + '</li>' + '</div>'))
+               .append($('<div class="poster">'+ '<img src=' + posterPath + response.results[i].poster_path + '>' + '</div>'))
+               .append($('<div class="overview">' + '<p>' + response.results[i].overview + '</p>' + '</div>'))
+               .appendTo("#movies-appear-here");
+               console.log(response.results[i].overview);
+           
 
         }
-        var divs = $("div > div");
+
+        /*var divs = $("div > div");
         for(var i = 0; i < divs.length; i+=3) {
         divs.slice(i, i+3).wrapAll("<div class='new'></div>");
-        }
+        }*/
+
       });
     });
 });
