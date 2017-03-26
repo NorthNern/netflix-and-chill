@@ -24,8 +24,12 @@
   <div class="container" id=mainpage>
     <br>
 
+<<<<<<< .merge_file_HsJmJJ
+    <!-- Jumbotron -->
+=======
 
-<!-- Jumbotron  -->
+<!--     Jumbotron  -->
+>>>>>>> .merge_file_KG3XZS
     <div class="jumbotron">
       <h1 class="text-center">Dinner and a Movie</h1>
     </div>
@@ -138,7 +142,11 @@
   </div>  <!-- closing container -->
 
   <!-- Stage Curtains -->
-<!-- <div id="stage">
+<<<<<<< .merge_file_HsJmJJ
+ <!--  <div id="stage">
+=======
+<!--   <div id="stage">
+>>>>>>> .merge_file_KG3XZS
    <div id="curtain-left" class="curtain"></div>
    <div id="curtain-right" class="curtain"></div>
    <div id="balance" class="balance"></div>
