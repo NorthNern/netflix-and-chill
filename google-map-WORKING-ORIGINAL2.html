@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <title>Place searches</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
@@ -82,6 +84,7 @@
 
       //END NEW ADDITIONS
 
+
       function initMap() {
         //NEW ADDITIONS
         // Create the autocomplete object, restricting the search to geographical
@@ -99,7 +102,7 @@
 
         map = new google.maps.Map(document.getElementById('map'), {
           //center: chicago,
-          center: userLocationFromGoogleApi;
+          center: userLocationFromGoogleApi,
           zoom: 15
         });
 
@@ -112,7 +115,7 @@
         //In particular, some types of place IDs may sometimes cause a NOT_FOUND response, or the API may return a different place ID in the response. :
         //TODO: We may want to include a 'NOT_FOUND' catch, especially if using stored place ids from firebase
         service.nearbySearch({
-          location: chicago, //take in a place_idz
+          location: userLocationFromGoogleApi, //take in a place_idz
           radius: 500,
           openNow: true,
           keyword: 'pizza', // take in a variable for food
@@ -253,14 +256,21 @@
         });
       }
 
-      $(".submit-button").on("click", function() {
-        initMap()
-      });  
+    //      
+    $(document).ready(function() {
 
+      $(".submit-button").on("click", function() {
+        console.log("this button works")
+        initMap();
+      });  
+    });
 
     </script>
   </head>
   <body>
+  <div class="text-center">
+        <button class="btn submit-button"><span></span> Change Map!</button>
+      </div>
   <div id="locationField">
       <input id="autocomplete" placeholder="Enter your address"
               type="text"></input>
@@ -298,7 +308,6 @@
       </tr>
     </table>
      <div id="map"></div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZEorXwDhgJ0yXHtzrQUH5looyzWRrKng&libraries=places&callback=initMap" async defer></script>
   </body>
 </html>
