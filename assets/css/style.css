@@ -86,20 +86,20 @@ body,
   background-attachment: fixed;
   background-position: -80px 0, 80px 0;
 }
-#stage:hover #curtain-left {
+#stage.open #curtain-left {
   width: 0;
   -webkit-transform: matrix(1, 0, -0.2, 1, 0, 0);
   -moz-transform: matrix(1, 0, -0.2, 1, 0, 0);
   -ms-transform: matrix(1, 0, -0.2, 1, 0, 0);
   -o-transform: matrix(1, 0, -0.2, 1, 0, 0);
 }
-#stage:hover #curtain-right {
+#stage.open #curtain-right {
   width: 0;
   -webkit-transform: matrix(-1, 0, 0.2, 1, 0, 0);
   -moz-transform: matrix(-1, 0, 0.2, 1, 0, 0);
   -ms-transform: matrix(-1, 0, 0.2, 1, 0, 0);
   -o-transform: matrix(-1, 0, 0.2, 1, 0, 0);
 }
-#stage:hover .balance {
+#stage.open .balance {
   height: 0;
 }*/
