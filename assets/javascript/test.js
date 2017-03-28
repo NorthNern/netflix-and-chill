@@ -14,7 +14,7 @@
 
 $(document).ready(function(){
 
-  var api_key = "389d68be11b0e85f0a15885dff0f20ce";
+  var movieApiKey = "389d68be11b0e85f0a15885dff0f20ce";
   var movieGenreId;
 
   //2014-10-22
@@ -36,8 +36,31 @@ $(document).ready(function(){
   var searchSelect;
   var searchSelectOptions = [];
   var movieSelect;
-  var movieChoices = []; //an array of movies returned after ajax call, will hold 5 
+  var movieChoices = []; //**IMPORTANT** this is the array of movies returned after ajax call, currently holds 5 objects
   var weightedRandom;
+  var foodArray = [];
+  var foodArrayAction = [american, chicken, pizza, wings];
+  var foodArrayHorror = [bakery, dessert, sandwiches];  //easy to eat / comfort foods?
+  var foodArrayComedy = [bbq, breakfast, cheesesteaks, chili]; //messy foods?
+  var foodArrayRomance = [ice cream, italian, thai];
+  var foodArrayDocumentary = [asian, chinese, indian, vegetarian];  //ethnic foods?
+  var foodArrayAnimation = [fast food, mexican, pizza];  //family foods?
+  var foodArrayDrama = [asian, deli, healthy, pasta, sushi, steak]; //filling meals?  
+
+  function fillFoodArray (chosenGenreArray) {
+    for (var i = 0; i < chosenGenreArray.length; i++) {
+      foodArray[i] = chosenGenreArray[i]
+    }
+  }
+
+  function chooseMovieFromApi () {
+    //TODO optional: could repeat function if movieSelect.title matches any firebase stored movies
+    var searchSelect = searchSelectOptions[(Math.floor(Math.random() * searchSelectOptions.length))]; //chooses random movie
+    console.log(searchSelect);  //TODO: remove in final project
+    movieSelect = response.results[searchSelect];
+    movieChoices.push(movieSelect);
+    searchSelectOptions.splice(searchSelect,1);  //prevents movie from being chosen twice
+    }
 
   today = yyyy +'-' + mm + '-' + dd;
 
@@ -49,12 +72,12 @@ $(document).ready(function(){
     dvdLastMonth = mm + 7;
     dvdLastYear = yyyy - 1;
   }
-  dvdFirstYear = yyyy - 40;
+  dvdFirstYear = yyyy - 70;  // can change this to only show recent movies if wanted
   dvdFirstMonth = mm;
   dvdFirstDate = dvdFirstYear +'-' + dvdFirstMonth + '-' + dd;
   dvdLastDate = dvdLastYear +'-' + dvdLastMonth + '-' + dd;
 
-  //date settings for 1 month for theatre release
+  //date settings for 1 month for theatre release, if we choose to have a 'go-out' section
   if (mm > 1) {
     theatreFirstMonth = mm - 1;
     theatreFirstYear = yyyy;    
@@ -64,7 +87,7 @@ $(document).ready(function(){
   }
   theatreFirstDate = theatreFirstYear +'-' + theatreFirstMonth + '-' + dd;
 
-//TODO:  Add "id": 18, "name": "Drama" , remove all ifs/elses
+//TODO:  Add "id": 18, "name": "Drama" , remove all ifs/elses and replace with drop-down input
 
 
   $(document).on("click", "#movie-genre-submit", function() {
@@ -72,24 +95,31 @@ $(document).ready(function(){
     var movieGenre = $("#movie-genre-input").val().trim(); //TODO: to lower case or use drop down
     if (movieGenre === "action"){
       movieGenreId = "28";
+      fillFoodArray(foodArrayAction);
     }
     if (movieGenre === "horror"){
       movieGenreId = "27";
+      fillFoodArray(foodArrayHorror);
     }
     if (movieGenre === "comedy"){
       movieGenreId = "35";
+      fillFoodArray(foodArrayComedy);
     }
     if (movieGenre === "romance"){
       movieGenreId = "27";
+      fillFoodArray(foodArrayRomance);
     }    
     if (movieGenre === "documentary"){
       movieGenreId = "99";
+      fillFoodArray(foodArrayDocumentary);
     }
     if (movieGenre === "animation"){
       movieGenreId = "16";
+      fillFoodArray(foodArrayAnimation);
     }    
     if (movieGenre === "drama"){
       movieGenreId = "18";
+      fillFoodArray(foodArrayDrama);
     }
     //TODO: Make Else-ifs, plus else to read error if anything else (or use drop down).
 
@@ -110,7 +140,7 @@ $(document).ready(function(){
     if (weightedRandom = 5) {
       searchPage = (Math.ceil(Math.random() * 25));         
     }
-     var queryURL = 'http://api.themoviedb.org/3/discover/movie?api_key=' + api_key + '&sort_by=popularity.desc' + 
+     var queryURL = 'http://api.themoviedb.org/3/discover/movie?api_key=' + movieApiKey + '&sort_by=popularity.desc' + 
       '&with_genres=' + movieGenreId + '&primary_release_date.gte=' + dvdFirstDate + '&primary_release_date.lte=' + dvdLastDate
       + '&page=' + searchPage;  
 
@@ -124,16 +154,12 @@ $(document).ready(function(){
         console.log(response) 
         searchSelectOptions = [];
         for (var i=0; i < 20; i++){
-        searchSelectOptions.push(i);
+          searchSelectOptions.push(i);  // creates an array for choosing random movies from results page without repeats
         }
         for (var i=0; i < 5; i++) {
 
-          
-          var searchSelect = searchSelectOptions[(Math.floor(Math.random() * searchSelectOptions.length))];
-          console.log(searchSelect)
-          movieSelect = response.results[searchSelect];
-          movieChoices.push(movieSelect);
-          searchSelectOptions.splice(searchSelect,1);
+          //gets random movie from 1-20 of results. 
+          chooseMovieFromApi();
 
 
 
@@ -143,7 +169,10 @@ $(document).ready(function(){
     });
 });
 
-
+//IMPORTANT SECTIONS TO DO:  
+//1.  use movieChoices array to output movie info in desired format.  it is an array of 5 objects, each object a randomly chosen movie
+//2.  google stuff
+//3.
 
 
 
