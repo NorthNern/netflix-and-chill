@@ -124,6 +124,7 @@ $(document).ready(function(){
         console.log(response) 
 
         $('#movies-appear-here').empty();
+        console.log()
         
         for (var i = 0; i < 5; i++) {
 

@@ -32,20 +32,21 @@ $(document).ready(function(){
   var theatreFirstMonth;
   var theatreFirstYear;
   var theatreFirstDate;
-  var searchPage; // for which page of results to search, each page has 20
+  var searchPage; // for which page of results to search, each page has 20 movies
   var searchSelect;
   var searchSelectOptions = [];
   var movieSelect;
   var movieChoices = []; //**IMPORTANT** this is the array of movies returned after ajax call, currently holds 5 objects
+  var posterPath = "http://image.tmdb.org/t/p/w185";
   var weightedRandom;
   var foodArray = [];
-  var foodArrayAction = [american, chicken, pizza, wings];
-  var foodArrayHorror = [bakery, dessert, sandwiches];  //easy to eat / comfort foods?
-  var foodArrayComedy = [bbq, breakfast, cheesesteaks, chili]; //messy foods?
-  var foodArrayRomance = [ice cream, italian, thai];
-  var foodArrayDocumentary = [asian, chinese, indian, vegetarian];  //ethnic foods?
-  var foodArrayAnimation = [fast food, mexican, pizza];  //family foods?
-  var foodArrayDrama = [asian, deli, healthy, pasta, sushi, steak]; //filling meals?  
+  var foodArrayAction = ["american", "chicken", "pizza", "wings"];
+  var foodArrayHorror = ["bakery", "dessert", "sandwiches"];  //easy to eat / comfort foods?
+  var foodArrayComedy = ["bbq", "breakfast", "cheesesteaks", "chili"]; //messy foods?
+  var foodArrayRomance = ["ice cream", "italian", "thai"];
+  var foodArrayDocumentary = ["asian", "chinese", "indian", "vegetarian"];  //ethnic foods?
+  var foodArrayAnimation = ["fast food", "mexican", "pizza"];  //family foods?
+  var foodArrayDrama = ["asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
 
   function fillFoodArray (chosenGenreArray) {
     for (var i = 0; i < chosenGenreArray.length; i++) {
@@ -53,13 +54,16 @@ $(document).ready(function(){
     }
   }
 
-  function chooseMovieFromApi () {
+  function chooseMovieFromApi (apiResults) {
     //TODO optional: could repeat function if movieSelect.title matches any firebase stored movies
-    var searchSelect = searchSelectOptions[(Math.floor(Math.random() * searchSelectOptions.length))]; //chooses random movie
+    var randomArrayPosition = (Math.floor(Math.random() * searchSelectOptions.length));
+    var searchSelect = searchSelectOptions[randomArrayPosition]; //chooses random movie
     console.log(searchSelect);  //TODO: remove in final project
-    movieSelect = response.results[searchSelect];
+    console.log("apiResults:"+  apiResults);
+    movieSelect = apiResults.results[searchSelect];
     movieChoices.push(movieSelect);
-    searchSelectOptions.splice(searchSelect,1);  //prevents movie from being chosen twice
+    searchSelectOptions.splice(randomArrayPosition,1);  //prevents movie from being chosen twice
+    console.log(searchSelectOptions);
     }
 
   today = yyyy +'-' + mm + '-' + dd;
@@ -90,9 +94,9 @@ $(document).ready(function(){
 //TODO:  Add "id": 18, "name": "Drama" , remove all ifs/elses and replace with drop-down input
 
 
-  $(document).on("click", "#movie-genre-submit", function() {
+  $(document).on("click", "#submitbutton", function() {
     event.preventDefault();
-    var movieGenre = $("#movie-genre-input").val().trim(); //TODO: to lower case or use drop down
+    var movieGenre = $("#genre-input").val().trim(); //TODO: to lower case or use drop down
     if (movieGenre === "action"){
       movieGenreId = "28";
       fillFoodArray(foodArrayAction);
@@ -106,7 +110,7 @@ $(document).ready(function(){
       fillFoodArray(foodArrayComedy);
     }
     if (movieGenre === "romance"){
-      movieGenreId = "27";
+      movieGenreId = "10749";
       fillFoodArray(foodArrayRomance);
     }    
     if (movieGenre === "documentary"){
@@ -123,7 +127,7 @@ $(document).ready(function(){
     }
     //TODO: Make Else-ifs, plus else to read error if anything else (or use drop down).
 
-    $("#movie-genre-input").val("");
+    $("#genre-input").val("");
     weightedRandom = (Math.ceil(Math.random()*5)); //makes it more likely to choose better movies, but still possible for others
     if (weightedRandom = 1) {      
       searchPage = (Math.ceil(Math.random() * 5));
@@ -150,6 +154,8 @@ $(document).ready(function(){
         url: queryURL,
         method: 'GET'
       }).done(function(response) {
+        movieChoices = []
+        $('#movies-appear-here').empty();
         console.log(queryURL)
         console.log(response) 
         searchSelectOptions = [];
@@ -159,11 +165,16 @@ $(document).ready(function(){
         for (var i=0; i < 5; i++) {
 
           //gets random movie from 1-20 of results. 
-          chooseMovieFromApi();
+          chooseMovieFromApi(response);
+          console.log("movieChoices i = " + movieChoices[i])
+          $("<div />", { "class":"wrapper", id:"movie"+i })
+               .append($('<div class="title">' + '<li>' + movieChoices[i].title + '</li>' + '</div>'))
+               .append($('<div class="poster">'+ '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div>'))
+               .append($('<div class="overview">' + '<p>' + movieChoices[i].overview + '</p>' + '</div>'))
+               .appendTo("#resultsmodal");
+               console.log(movieChoices[i].overview);
 
-
-
-          $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
+          // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
         }
       });
     });
