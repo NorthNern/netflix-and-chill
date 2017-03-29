@@ -41,25 +41,7 @@
         console.log('Geolocation is not supported for this Browser/OS.');
       }
 
-      window.onload = function() {
-        var startPos;
-        var startLat;
-        var startLon;
-
-        var geoSuccess = function(position) {
-          startPos = position;
-          startLat = startPos.coords.latitude;
-          startLon = startPos.coords.longitude;
-          console.log(startLat);
-          console.log(startLon);
-         };
-        navigator.geolocation.getCurrentPosition(geoSuccess);
-        console.log(navigator.geolocation.getCurrentPosition(geoSuccess));
-        userGeolocation = navigator.geolocation.getCurrentPosition(geoSuccess);
-        console.log("geolocation is" + userGeolocation);
-      };
-
-      function initMap() {
+     function initMap() {
         //NEW ADDITIONS
         // Create the autocomplete object, restricting the search to geographical
         // location types.
@@ -75,13 +57,33 @@
       //  var chicago = {lat: 41.881, lng: -87.623};
 
         map = new google.maps.Map(document.getElementById('map'), {
-          //center: chicago,
           center: userLocationFromGoogleApi,
           zoom: 15
         });
 
         infowindow = new google.maps.InfoWindow();
         service = new google.maps.places.PlacesService(map);
+
+        var startPos;
+        var startLat;
+        var startLon;
+
+        var geoSuccess = function(position) {
+          startPos = position;
+          startLat = startPos.coords.latitude;
+          startLon = startPos.coords.longitude;
+         }; 
+
+         navigator.geolocation.getCurrentPosition(function(position) {
+            userLocationFromGoogleApi = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            infowindow.setPosition(userLocationFromGoogleApi);
+            map.setCenter(userLocationFromGoogleApi);
+            console.log(userLocationFromGoogleApi);
+          });
+
         //map.addListener('idle', performSearch);
         //TODO:  Add if (KEYWORDVARIABLE !== '')
         //Place IDs may change due to large-scale updates on the Google Maps database. In such cases, a pace may receive a new place ID, and the old ID returns a NOT_FOUND response.
