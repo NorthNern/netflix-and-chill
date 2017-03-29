@@ -46,7 +46,29 @@
         }, callback);
       }
 
+      if (navigator.geolocation) {
+        console.log('Geolocation is supported!');
+      }
+      else {
+        console.log('Geolocation is not supported for this Browser/OS.');
+      }
 
+      window.onload = function() {
+        var startPos;
+        var startLat;
+        var startLon;
+
+        var geoSuccess = function(position) {
+          startPos = position;
+          startLat = startPos.coords.latitude;
+          startLon = startPos.coords.longitude;
+          console.log(startLat);
+          console.log(startLon);
+        };
+        navigator.geolocation.getCurrentPosition(geoSuccess);
+
+      };
+      
       function callback(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
