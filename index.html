@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
  <meta charset="UTF-8">
  <title>Dinner and a Movie</title>
@@ -11,64 +12,52 @@
  <!-- Linking to Bootstrap -->
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
  <meta name="viewport", initial-scale-1">
- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+ <!-- Linking to jQuery -->
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
- <!-- Linking to jQuery -->
- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+ <script src="assets/javascript/stage.js"></script>
 </head>
-<body>
 
+<body>
   <!-- Creating a container with which to hold everything. -->
   <div class="container" id=mainpage>
     <br>
 
-
-<!-- Jumbotron  -->
+<!--     Jumbotron  -->
     <div class="jumbotron">
       <h1 class="text-center">Dinner and a Movie</h1>
-    </div>
-    
-    <!-- Modal that describes project. -->
-    <div class="container">
-      <!-- Trigger the modal with a button -->
-      <div class="row">
-        <button type="button" class="btn btn-info btn-lg center-block" data-toggle="modal" data-target="#myModal">Click to Read the Inspiration Behind Dinner and a Movie!</button>
-      </div>
+    </div> <!-- closes jumbotron -->
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
-      <div class="modal-dialog">
-    
-      <!-- Modal content-->
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Dinner and a Movie</h4>
-        </div>
-        <div class="modal-body">
-          <p>Dinner and a Movie was created to allow users a quick and easy way to enjoy both a meal and film from the comfort of their couch with the click of a button.(Click the popcorn to get started!)</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+<!-- Modal that describes project. -->
+   <div class="containerModal">
+     <!-- Trigger the modal with a button -->
+     <div class="row">
+       <button type="button" class="btn btn-info btn-lg center-block" data-toggle="modal" data-target="#myModal">Click to Read the Inspiration Behind Dinner and a Movie!</button>
+     </div>
+
+   <!-- Modal -->
+   <div class="modal fade" id="myModal" role="dialog">
+     <div class="modal-dialog">
+   
+     <!-- Modal content-->
+     <div class="modal-content">
+       <div class="modal-header">
+         <button type="button" class="close" data-dismiss="modal">&times;</button>
+         <h4 class="modal-title">Dinner and a Movie</h4>
+       </div>
+       <div class="modal-body">
+         <p>Dinner and a Movie was created to allow users a quick and easy way to enjoy both a meal and film from the comfort of their couch with the click of a button. (Click the popcorn to get started!)</p>
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+       </div>
+     </div>
+   </div>
+ </div>
 </div>
-
-<br>
-    <div class="popcornBtn">
-     <!--  <div class="row">
-        <button type="button" class="btn btn-info btn-lg center-block">Click Here to Get Started!</button></div> -->
-        <button class="btn btn-default btn-circle center-block">
-        <img class="popcorn" src="assets/images/popcorn.png" alt="movieTicket" class="img-circle" width="100" height="100">
-        </button>
-        <br>
-        <!-- <div class="row">
-        <h2>Submit</h2></div> -->
-    </div>
 
     <!-- New  row to hold form data -->
     <div class="row">
@@ -81,6 +70,13 @@
           </div>
           
           <div class="panel-body">
+
+            <!-- Name input -->
+            <form role="form">
+              <div class="form-group">
+                <label for="name-input">Name:</label>
+                <input class="form-control" id="name-input" type="text">
+              </div>
 
               <!-- Address input -->
               <div class="form-group">
@@ -121,48 +117,14 @@
               </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn" id="submitbutton">See your dinner and movie options!</button>
+              <button type="submit" class="btn">See your dinner and movie options!</button>
 
-          </form>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </div> <!-- closing id = main --> 
-  </div>  <!-- closing container -->
-
-
-
-  <div class="container" id=resultsmodal>
-    <br>
-      <!-- Row in model to hold results -->
-    <div class="row">
-      <h2>Your Customized Dinner and a Movie Results</h2>
-    </div>
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="panel panel-default">
-          
-<!-- panel title -->
-          <div class="panel-heading">
-            <h3 class="panel-title" id="movietitle"></h3>
-          </div>
-
-<!-- panel body -->
-          <div class="panel-body">
-
-            <div class="col-lg-6" id="movieresults"></div>
-            <div class="col-lg-6" id="foodresults"></div>
-
-          </div>
-        </div>
-      </div>
-    </div> 
-
-  <script type="text/javascript" src="assets/javascript/test.js"></script>
+            </form> <!-- closes form -->
+          </div> <!-- closes panel body -->
+        </div> <!-- closes panel panel-default -->
+      </div> <!-- closes col-lg-12 -->
+    </div> <!-- closes row --> 
+  </div>  <!-- closes container -->
 
 </body>
 </html>
