@@ -2,6 +2,13 @@
 
 ///IMPORTANT:  Testindex loads this and works, some of the css styling might be necessary for google map to appear correctly
 // copy and paste info from testindex such as css and <script> information if things break
+
+
+//IMPORTANT TODO:  If google maps returns no results on new search, say something like "Sorry, there are no places currently open that offer xxx delivery in your area.  Try one of these options instead!"
+//...then return a much more generic search for any delivery food nearby
+
+//TODO:  add command to remove old mapmarkers (put in new search function)
+
    
     //input div for genre
     //*OPTIONAL input div for movie name
@@ -16,12 +23,15 @@
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
+
+
       var map;
       var infowindow;
       var service;
       //NEW ADDITIONS:
       var userPlaceIdFromGoogleApi;
       var userLocationFromGoogleApi = {lat: 41.881, lng: -87.623};
+      var userLocationFromGoogleApi2;
       var placeSearch, autocomplete;
       var userGeolocation;
       var componentForm = {
@@ -41,7 +51,32 @@
         console.log('Geolocation is not supported for this Browser/OS.');
       }
 
-     function initMap() {
+      window.onload = function() {
+        var startPos;
+        var startLat;
+        var startLon;
+
+        var geoSuccess = function(position) {
+          startPos = position;
+          startLat = startPos.coords.latitude;
+          startLon = startPos.coords.longitude;
+          // console.log(startLat);
+          // console.log(startLon);
+         }; 
+
+         navigator.geolocation.getCurrentPosition(function(position) {
+            userLocationFromGoogleApi = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            console.log(userLocationFromGoogleApi);
+            map.setCenter(userLocationFromGoogleApi);
+          });
+      };
+      
+      console.log(userLocationFromGoogleApi);
+
+      function initMap() {
         //NEW ADDITIONS
         // Create the autocomplete object, restricting the search to geographical
         // location types.
@@ -56,33 +91,16 @@
 
       //  var chicago = {lat: 41.881, lng: -87.623};
 
+      
+
         map = new google.maps.Map(document.getElementById('map'), {
+          //center: chicago,
           center: userLocationFromGoogleApi,
           zoom: 15
         });
 
         infowindow = new google.maps.InfoWindow();
         service = new google.maps.places.PlacesService(map);
-
-        var startPos;
-        var startLat;
-        var startLon;
-
-        var geoSuccess = function(position) {
-          startPos = position;
-          startLat = startPos.coords.latitude;
-          startLon = startPos.coords.longitude;
-         }; 
-
-         navigator.geolocation.getCurrentPosition(function(position) {
-            userLocationFromGoogleApi = {
-              lat: position.coords.latitude,
-              lng: position.coords.longitude
-            };
-            infowindow.setPosition(userLocationFromGoogleApi);
-            map.setCenter(userLocationFromGoogleApi);
-            console.log(userLocationFromGoogleApi);
-          });
 
         //map.addListener('idle', performSearch);
         //TODO:  Add if (KEYWORDVARIABLE !== '')
@@ -140,6 +158,10 @@
         var place = autocomplete.getPlace();        
         userPlaceIdFromGoogleApi = place.place_id;
         userLocationFromGoogleApi = place.geometry.location;
+        userLocationFromGoogleApi2 = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng()
+        }
         for (var component in componentForm) {
           document.getElementById(component).value = '';
           document.getElementById(component).disabled = false;
@@ -191,7 +213,8 @@
 
       function callback(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          for (var i = 0; i < results.length; i++) {
+          console.log("testing if this is run again.")
+          for (var i = 0; i < results.length && i < 5; i++) {
             createMarker(results[i]);
           }
         }
@@ -231,12 +254,28 @@
         });
       }
 
+  function searchNewLocation(referenceLocation){
+    var googleRequest = {
+      location: referenceLocation,
+      radius: 1500,
+      // openNow: true,  TODO:  REMOVE THIS COMMENT.  made it hard to test.
+      keyword: 'pizza', // take in a variable for food
+      type: ['restaurant']
+    };
+    console.log("searchNewLocationWorked");
+    console.log(referenceLocation);
+    infowindow = new google.maps.InfoWindow();
+    var googleService = new google.maps.places.PlacesService(map);
+    googleService.nearbySearch(googleRequest, callback);
+  }
   //document.ready interferes with google functions (loads on page start already, so included below)
   $(document).ready(function() {
 
       $(".submit-button").on("click", function() {
         console.log("this button works")
+        console.log(userLocationFromGoogleApi2)
         initMap();
+        searchNewLocation(userLocationFromGoogleApi2)
       });  
 
 
