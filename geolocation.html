@@ -19,7 +19,20 @@
         padding: 0;
       }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+
     <script>
+      var config = {
+        apiKey: "AIzaSyCLoGDTlFa3U0DmdGRg6bIiMpFuJvqCzEw",
+        authDomain: "netflix-and-chill-61727.firebaseapp.com",
+        databaseURL: "https://netflix-and-chill-61727.firebaseio.com",
+        storageBucket: "netflix-and-chill-61727.appspot.com",
+        messagingSenderId: "461386679866"
+      };
+
+      firebase.initializeApp(config);
+
+      var dataRef = firebase.database();
 
       var map;
       var infowindow;
@@ -41,7 +54,7 @@
           startPos = position;
           startLat = startPos.coords.latitude;
           startLon = startPos.coords.longitude;
-          console.log(startLan);
+          console.log(startLat);
           console.log(startLon);
         };
         navigator.geolocation.getCurrentPosition(geoSuccess);
