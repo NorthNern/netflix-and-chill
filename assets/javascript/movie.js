@@ -123,8 +123,11 @@ $(document).ready(function(){
       }).done(function(response) {
         console.log(response) 
 
-        $('#movies-appear-here').empty();
-        console.log()
+        $("#movie0").empty();
+        $("#movie1").empty();
+        $("#movie2").empty();
+        $("#movie3").empty();
+        $("#movie4").empty();
         
         for (var i = 0; i < 5; i++) {
 
