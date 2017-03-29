@@ -94,9 +94,9 @@ $(document).ready(function(){
 //TODO:  Add "id": 18, "name": "Drama" , remove all ifs/elses and replace with drop-down input
 
 
-  $(document).on("click", "#movie-genre-submit", function() {
+  $(document).on("click", "#submitbutton", function() {
     event.preventDefault();
-    var movieGenre = $("#movie-genre-input").val().trim(); //TODO: to lower case or use drop down
+    var movieGenre = $("#genre-input").val().trim(); //TODO: to lower case or use drop down
     if (movieGenre === "action"){
       movieGenreId = "28";
       fillFoodArray(foodArrayAction);
@@ -127,7 +127,7 @@ $(document).ready(function(){
     }
     //TODO: Make Else-ifs, plus else to read error if anything else (or use drop down).
 
-    $("#movie-genre-input").val("");
+    $("#genre-input").val("");
     weightedRandom = (Math.ceil(Math.random()*5)); //makes it more likely to choose better movies, but still possible for others
     if (weightedRandom = 1) {      
       searchPage = (Math.ceil(Math.random() * 5));
@@ -171,7 +171,7 @@ $(document).ready(function(){
                .append($('<div class="title">' + '<li>' + movieChoices[i].title + '</li>' + '</div>'))
                .append($('<div class="poster">'+ '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div>'))
                .append($('<div class="overview">' + '<p>' + movieChoices[i].overview + '</p>' + '</div>'))
-               .appendTo("#movies-appear-here");
+               .appendTo("#resultsmodal");
                console.log(movieChoices[i].overview);
 
           // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
