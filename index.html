@@ -82,13 +82,6 @@
           
           <div class="panel-body">
 
-            <!-- Name input -->
-            <form role="form">
-              <div class="form-group">
-                <label for="name-input">Name:</label>
-                <input class="form-control" id="name-input" type="text">
-              </div>
-
               <!-- Address input -->
               <div class="form-group">
                 <label for="address-input">Address:</label>
@@ -128,7 +121,7 @@
               </div>
 
             <!-- Submit button -->
-            <button type="submit" class="btn">See your dinner and movie options!</button>
+            <button type="submit" class="btn" id="submitbutton">See your dinner and movie options!</button>
 
           </form>
 
@@ -141,13 +134,35 @@
   </div> <!-- closing id = main --> 
   </div>  <!-- closing container -->
 
-  <!-- Stage Curtains -->
-  <!-- <div id="stage">
-   <div id="curtain-left" class="curtain"></div>
-   <div id="curtain-right" class="curtain"></div>
-   <div id="balance" class="balance"></div>
-   <div class="spotlight"></div>
- </div> -->
+
+
+  <div class="container" id=resultsmodal>
+    <br>
+      <!-- Row in model to hold results -->
+    <div class="row">
+      <h2>Your Customized Dinner and a Movie Results</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="panel panel-default">
+          
+<!-- panel title -->
+          <div class="panel-heading">
+            <h3 class="panel-title" id="movietitle"></h3>
+          </div>
+
+<!-- panel body -->
+          <div class="panel-body">
+
+            <div class="col-lg-6" id="movieresults"></div>
+            <div class="col-lg-6" id="foodresults"></div>
+
+          </div>
+        </div>
+      </div>
+    </div> 
+
+  <script type="text/javascript" src="assets/javascript/test.js"></script>
 
 </body>
 </html>
