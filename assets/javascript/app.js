@@ -81,7 +81,7 @@
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
-            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete-field')),
             {types: ['geocode']});
 
         // When the user selects an address from the dropdown, populate the address
@@ -111,7 +111,7 @@
         service.nearbySearch({
           location: userLocationFromGoogleApi, //take in a place_idz
           radius: 500,
-          openNow: true,
+         // openNow: true,
           keyword: 'pizza', // take in a variable for food
           type: ['restaurant']
         }, callback);
@@ -271,11 +271,12 @@
   //document.ready interferes with google functions (loads on page start already, so included below)
   $(document).ready(function() {
 
-      $(".submit-button").on("click", function() {
+      $("#form-submit").on("click", function() {
         console.log("this button works")
         console.log(userLocationFromGoogleApi2)
         initMap();
         searchNewLocation(userLocationFromGoogleApi2)
+        $("#map").css("visibility", "visible");
       });  
 
 
