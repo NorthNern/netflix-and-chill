@@ -121,7 +121,7 @@ $(document).ready(function(){
         url: queryURL,
         method: 'GET'
       }).done(function(response) {
-        console.log(response) 
+        //console.log(response) 
 
         $("#movie0").empty();
         $("#movie1").empty();
