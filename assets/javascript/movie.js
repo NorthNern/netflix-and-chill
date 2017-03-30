@@ -10,9 +10,12 @@
     // on genre submit, store genre as genre_id, ajax call to themoviedb, fill output div
     // if reshuffle, call moviedb function again, choosing a new movie if any are the same
     // once movie is chosen, remove other 4 movies from output div, empty the other divs, move on to yelp (use genre to search 5 nearby foods)
-$( function() {
-    $( document ).tooltip();
-  } );  
+// $( function() {
+//     $( document ).tooltip();
+//   } );  
+// $(function () {
+//   $('[data-toggle="popover"]').popover()
+// });
 
 $(document).ready(function(){
 
@@ -118,9 +121,13 @@ $(document).ready(function(){
         url: queryURL,
         method: 'GET'
       }).done(function(response) {
-        console.log(response) 
+        //console.log(response) 
 
-        $('#movies-appear-here').empty();
+        $("#movie0").empty();
+        $("#movie1").empty();
+        $("#movie2").empty();
+        $("#movie3").empty();
+        $("#movie4").empty();
         
         for (var i = 0; i < 5; i++) {
 
@@ -130,8 +137,7 @@ $(document).ready(function(){
                .append($('<div class="title">' + '<li>' + response.results[i].title + '</li>' + '</div>'))
                .append($('<div class="poster">'+ '<img src=' + posterPath + response.results[i].poster_path + '>' + '</div>'))
                .append($('<div class="overview">' + '<p>' + response.results[i].overview + '</p>' + '</div>'))
-               .appendTo("#movies-appear-here");
-               console.log(response.results[i].overview);
+               .appendTo("#movie"+i);
            
 
         }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
+
 <head>
  <meta charset="UTF-8">
  <title>Dinner and a Movie</title>
@@ -11,12 +12,16 @@
  <!-- Linking to Bootstrap -->
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
  <meta name="viewport", initial-scale-1">
+
+ <!-- Linking to jQuery -->
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
- <script src="assets/javascript/stage.js"></script>
+  <script type="text/javascript" src="assets/javascript/app.js"></script>
+  <script src="assets/javascript/stage.js"></script>
 
 </head>
+
 <body>
 
   <!-- Creating a container with which to hold everything. -->
@@ -127,16 +132,38 @@
             <button type="submit" class="btn">See your dinner and movie options!</button>
             <div>
 
-          </form>
+            </form> <!-- closes form -->
+          </div> <!-- closes panel body -->
+        </div> <!-- closes panel panel-default -->
+      </div> <!-- closes col-lg-12 -->
+    </div> <!-- closes row --> 
 
-        </div>
 
-      </div>
+    <!-- row to hold movies -->
+    <div class="row"> 
+          <!-- div to hold movies -->  
+          <div class="col-sm-12 text-center" id = "movie-appear-here">
+            <!-- row for first 3 movies -->  
+            <div class="row"> 
+              <!-- div for individual movie -->   
+              <div class="col-sm-4 text-center wrapper" id = "movie0">  
+              </div>
+              <div class="col-sm-4 text-center wrapper" id = "movie1">
+              </div>
+              <div class="col-sm-4 text-center wrapper" id = "movie2">
+              </div>
+            </div>
+            <div class="row"> <!-- row for last 2 movies -->
+              <div class="col-sm-4 text-center wrapper" id = "movie3">
+              </div> 
+              <div class="col-sm-4 text-center wrapper" id = "movie4">
+              </div>
+            </div> 
+          </div> <!-- closes div where movies appear -->
+    </div>  <!-- closes movie row -->
 
-    </div>
 
-  </div> <!-- closing id = main --> 
-  </div>  <!-- closing container -->
+  </div>  <!-- closes container -->
 
   <!-- Stage Curtains -->
   <div id="stage">

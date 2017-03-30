@@ -1,6 +1,7 @@
 
 
-
+///IMPORTANT:  Testindex loads this and works, some of the css styling might be necessary for google map to appear correctly
+// copy and paste info from testindex such as css and <script> information if things break
    
     //input div for genre
     //*OPTIONAL input div for movie name
@@ -10,9 +11,236 @@
     // on genre submit, store genre as genre_id, ajax call to themoviedb, fill output div
     // if reshuffle, call moviedb function again, choosing a new movie if any are the same
     // once movie is chosen, remove other 4 movies from output div, empty the other divs, move on to yelp (use genre to search 5 nearby foods)
-    
+   
+      // This example requires the Places library. Include the libraries=places
+      // parameter when you first load the API. For example:
+      // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-$(document).ready(function(){
+      var map;
+      var infowindow;
+      var service;
+      //NEW ADDITIONS:
+      var userPlaceIdFromGoogleApi;
+      var userLocationFromGoogleApi = {lat: 41.881, lng: -87.623};
+      var placeSearch, autocomplete;
+      var userGeolocation;
+      var componentForm = {
+        street_number: 'short_name',
+        route: 'long_name',
+        locality: 'long_name',
+        administrative_area_level_1: 'short_name',
+        country: 'long_name',
+        postal_code: 'short_name'
+      };
+
+      //END NEW ADDITIONS
+       if (navigator.geolocation) {
+        console.log('Geolocation is supported!');
+      }
+      else {
+        console.log('Geolocation is not supported for this Browser/OS.');
+      }
+
+      window.onload = function() {
+        var startPos;
+        var startLat;
+        var startLon;
+
+        var geoSuccess = function(position) {
+          startPos = position;
+          startLat = startPos.coords.latitude;
+          startLon = startPos.coords.longitude;
+          console.log(startLat);
+          console.log(startLon);
+         };
+        navigator.geolocation.getCurrentPosition(geoSuccess);
+        console.log(navigator.geolocation.getCurrentPosition(geoSuccess));
+        userGeolocation = navigator.geolocation.getCurrentPosition(geoSuccess);
+        console.log("geolocation is" + userGeolocation);
+      };
+
+      function initMap() {
+        //NEW ADDITIONS
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+            {types: ['geocode']});
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', fillInAddress);
+        //END NEW ADDITIONS
+
+      //  var chicago = {lat: 41.881, lng: -87.623};
+
+        map = new google.maps.Map(document.getElementById('map'), {
+          //center: chicago,
+          center: userLocationFromGoogleApi,
+          zoom: 15
+        });
+
+        infowindow = new google.maps.InfoWindow();
+        service = new google.maps.places.PlacesService(map);
+        //map.addListener('idle', performSearch);
+        //TODO:  Add if (KEYWORDVARIABLE !== '')
+        //Place IDs may change due to large-scale updates on the Google Maps database. In such cases, a pace may receive a new place ID, and the old ID returns a NOT_FOUND response.
+
+        //In particular, some types of place IDs may sometimes cause a NOT_FOUND response, or the API may return a different place ID in the response. :
+        //TODO: We may want to include a 'NOT_FOUND' catch, especially if using stored place ids from firebase
+        service.nearbySearch({
+          location: userLocationFromGoogleApi, //take in a place_idz
+          radius: 500,
+          openNow: true,
+          keyword: 'pizza', // take in a variable for food
+          type: ['restaurant']
+        }, callback);
+        }
+
+
+
+
+        //TODO:  REfocus map when address info is submitted (call init map again?) use userplaceid to call map, if unavailable use zip 
+        //TODO:  Focus map on geolocation instead of chicago at start (use theresa's code)
+
+
+
+
+
+
+       // var request = { reference: place.reference };
+
+       //  service.getDetails(request, function(details, status) {
+       //    google.maps.event.addListener(marker, 'click', function() {
+       //      infowindow.setContent(details.name + "<br />" + details.formatted_address +"<br />" + details.website + "<br />" + details.rating + "<br />" + details.formatted_phone_number);
+       //    });
+       //    infowindow.open(map, this);
+       //  });
+      
+
+
+            //NEW ADDITIONS
+      // function initAutocomplete() {
+      //   // Create the autocomplete object, restricting the search to geographical
+      //   // location types.
+      //   autocomplete = new google.maps.places.Autocomplete(
+      //       /** @type {!HTMLInputElement} */(document.getElementById('autocomplete')),
+      //       {types: ['geocode']});
+
+      //   // When the user selects an address from the dropdown, populate the address
+      //   // fields in the form.
+      //   autocomplete.addListener('place_changed', fillInAddress);
+      // }
+
+      function fillInAddress() {
+
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();        
+        userPlaceIdFromGoogleApi = place.place_id;
+        userLocationFromGoogleApi = place.geometry.location;
+        for (var component in componentForm) {
+          document.getElementById(component).value = '';
+          document.getElementById(component).disabled = false;
+        }
+
+        // Get each component of the address from the place details
+        // and fill the corresponding field on the form.
+        for (var i = 0; i < place.address_components.length; i++) {
+          var addressType = place.address_components[i].types[0];
+          if (componentForm[addressType]) {
+            var val = place.address_components[i][componentForm[addressType]];
+            document.getElementById(addressType).value = val;
+          }
+        }
+      }
+
+        // Bias the autocomplete object to the user's geographical location,
+      // as supplied by the browser's 'navigator.geolocation' object.
+      // function geolocate() {
+      //   if (navigator.geolocation) {
+      //     navigator.geolocation.getCurrentPosition(function(position) {
+      //       var geolocation = {
+      //         lat: position.coords.latitude,
+      //         lng: position.coords.longitude
+      //       };
+      //       console.log(geolocation);
+      //       var circle = new google.maps.Circle({
+      //         center: geolocation,
+      //         radius: position.coords.accuracy
+      //       });
+      //       console.log(circle);
+      //       autocomplete.setBounds(circle.getBounds());
+      //     });
+      //   }
+      // }
+
+
+
+      //END NEW ADDITIONS
+
+
+//       function performSearch() {
+//   // var request = {
+//   //   bounds: map.getBounds(),
+//   //   keyword: 'best view'
+//   // };
+//   // service.radarSearch(request, callback);
+// }
+
+      function callback(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          placeId: place.place_id,
+          position: place.geometry.location
+        });
+
+        console.log(place.place_id);
+
+
+
+        google.maps.event.addListener(marker, 'click', function() {
+
+          service.getDetails(place, function(result, status) {
+            if (status !== google.maps.places.PlacesServiceStatus.OK) {
+              console.error(status);
+              return;
+            }
+          infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
+            result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
+            '<br />' + result.formatted_phone_number + '<br />' +  '<a  target="_blank" href=' + 
+            result.website + '>' + result.website + '</a></p>' ) ;
+
+          console.log(place.formatted_address);
+          console.log(place.formatted_phone_number);
+          console.log(place.website);
+
+          
+        });
+          infowindow.open(map, this);
+        });
+      }
+
+  //document.ready interferes with google functions (loads on page start already, so included below)
+  $(document).ready(function() {
+
+      $(".submit-button").on("click", function() {
+        console.log("this button works")
+        initMap();
+      });  
+
+
+
+  //END GOOGLE MAPS CODE, START MOVIE CODE
+
 
   var movieApiKey = "389d68be11b0e85f0a15885dff0f20ce";
   var movieGenreId;
@@ -32,20 +260,21 @@ $(document).ready(function(){
   var theatreFirstMonth;
   var theatreFirstYear;
   var theatreFirstDate;
-  var searchPage; // for which page of results to search, each page has 20
+  var searchPage; // for which page of results to search, each page has 20 movies
   var searchSelect;
   var searchSelectOptions = [];
   var movieSelect;
   var movieChoices = []; //**IMPORTANT** this is the array of movies returned after ajax call, currently holds 5 objects
+  var posterPath = "http://image.tmdb.org/t/p/w185";
   var weightedRandom;
   var foodArray = [];
-  var foodArrayAction = [american, chicken, pizza, wings];
-  var foodArrayHorror = [bakery, dessert, sandwiches];  //easy to eat / comfort foods?
-  var foodArrayComedy = [bbq, breakfast, cheesesteaks, chili]; //messy foods?
-  var foodArrayRomance = [ice cream, italian, thai];
-  var foodArrayDocumentary = [asian, chinese, indian, vegetarian];  //ethnic foods?
-  var foodArrayAnimation = [fast food, mexican, pizza];  //family foods?
-  var foodArrayDrama = [asian, deli, healthy, pasta, sushi, steak]; //filling meals?  
+  var foodArrayAction = ["american", "chicken", "pizza", "wings"];
+  var foodArrayHorror = ["bakery", "dessert", "sandwiches"];  //easy to eat / comfort foods?
+  var foodArrayComedy = ["bbq", "breakfast", "cheesesteaks", "chili"]; //messy foods?
+  var foodArrayRomance = ["ice cream", "italian", "thai"];
+  var foodArrayDocumentary = ["asian", "chinese", "indian", "vegetarian"];  //ethnic foods?
+  var foodArrayAnimation = ["fast food", "mexican", "pizza"];  //family foods?
+  var foodArrayDrama = ["asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
 
   function fillFoodArray (chosenGenreArray) {
     for (var i = 0; i < chosenGenreArray.length; i++) {
@@ -53,13 +282,16 @@ $(document).ready(function(){
     }
   }
 
-  function chooseMovieFromApi () {
+  function chooseMovieFromApi (apiResults) {
     //TODO optional: could repeat function if movieSelect.title matches any firebase stored movies
-    var searchSelect = searchSelectOptions[(Math.floor(Math.random() * searchSelectOptions.length))]; //chooses random movie
+    var randomArrayPosition = (Math.floor(Math.random() * searchSelectOptions.length));
+    var searchSelect = searchSelectOptions[randomArrayPosition]; //chooses random movie
     console.log(searchSelect);  //TODO: remove in final project
-    movieSelect = response.results[searchSelect];
+    console.log("apiResults:"+  apiResults);
+    movieSelect = apiResults.results[searchSelect];
     movieChoices.push(movieSelect);
-    searchSelectOptions.splice(searchSelect,1);  //prevents movie from being chosen twice
+    searchSelectOptions.splice(randomArrayPosition,1);  //prevents movie from being chosen twice
+    console.log(searchSelectOptions);
     }
 
   today = yyyy +'-' + mm + '-' + dd;
@@ -90,9 +322,9 @@ $(document).ready(function(){
 //TODO:  Add "id": 18, "name": "Drama" , remove all ifs/elses and replace with drop-down input
 
 
-  $(document).on("click", "#movie-genre-submit", function() {
+  $(document).on("click", "#submitbutton", function() {
     event.preventDefault();
-    var movieGenre = $("#movie-genre-input").val().trim(); //TODO: to lower case or use drop down
+    var movieGenre = $("#genre-input").val().trim(); //TODO: to lower case or use drop down
     if (movieGenre === "action"){
       movieGenreId = "28";
       fillFoodArray(foodArrayAction);
@@ -106,7 +338,7 @@ $(document).ready(function(){
       fillFoodArray(foodArrayComedy);
     }
     if (movieGenre === "romance"){
-      movieGenreId = "27";
+      movieGenreId = "10749";
       fillFoodArray(foodArrayRomance);
     }    
     if (movieGenre === "documentary"){
@@ -123,7 +355,7 @@ $(document).ready(function(){
     }
     //TODO: Make Else-ifs, plus else to read error if anything else (or use drop down).
 
-    $("#movie-genre-input").val("");
+    $("#genre-input").val("");
     weightedRandom = (Math.ceil(Math.random()*5)); //makes it more likely to choose better movies, but still possible for others
     if (weightedRandom = 1) {      
       searchPage = (Math.ceil(Math.random() * 5));
@@ -150,6 +382,8 @@ $(document).ready(function(){
         url: queryURL,
         method: 'GET'
       }).done(function(response) {
+        movieChoices = []
+        $('#movies-appear-here').empty();
         console.log(queryURL)
         console.log(response) 
         searchSelectOptions = [];
@@ -159,374 +393,19 @@ $(document).ready(function(){
         for (var i=0; i < 5; i++) {
 
           //gets random movie from 1-20 of results. 
-          chooseMovieFromApi();
+          chooseMovieFromApi(response);
+          console.log("movieChoices i = " + movieChoices[i])
+          $("<div />", { "class":"wrapper", id:"movie"+i })
+               .append($('<div class="title">' + '<li>' + movieChoices[i].title + '</li>' + '</div>'))
+               .append($('<div class="poster">'+ '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div>'))
+               .append($('<div class="overview">' + '<p>' + movieChoices[i].overview + '</p>' + '</div>'))
+               .appendTo("#resultsmodal");
+               console.log(movieChoices[i].overview);
 
-
-
-          $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
+          // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
         }
       });
     });
 });
 
-//IMPORTANT SECTIONS TO DO:  
-//1.  use movieChoices array to output movie info in desired format.  it is an array of 5 objects, each object a randomly chosen movie
-//2.  google stuff
-//3.
-
-
-
-
-
-//         dataType: 'jsonp',
-//         jsonpCallback: 'testing'
-//       }).error(function() {
-//         console.log('error')      }).done(function(response) {
-//         console.log(response)
-//         for (var i = 0; i < response.results.length; i++) {
-//           $('#movies-appear-here').append('<li>' + response.results[i].title + '</li>');
-//         }
-//       });
-//     });
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// $(document).ready(function() {
-
-
-// var topics = ["happy", "sad", "bored", "excited", "annoyed", "angry", "facepalm"];
-// var gifButtonId = 0; // for setting buttonIDs, will increment whenever a gif button is created
-
-// // creates a gif search button
-// function create_gif_button(gifTopic) {
-    
-//     var gifButton = $("<button>") 
-//     gifButton.attr("data-gif", gifTopic);
-//     gifButton.text(gifTopic);
-//     gifButton.attr("id", 'btn_'+gifButtonId);
-//     gifButton.attr("class", "gifSearchButton");
-//     gifButtonId++; // in this function instead of in for loop so that additional buttons can be made with incremental ids.
-//     $("#gif-buttons-here").append(" ");
-//     $("#gif-buttons-here").append(gifButton);
-// }
-
-// // creates initial set of gif search buttons
-// for (var i =0; i < topics.length; i++) {
-//     create_gif_button(topics[i]);
-// }
-
-// // adds search button according to text input
-// $(document).on("click", "#gif-search-submit", function(event) {
-//     event.preventDefault();
-//     var gifTopic = $("#gif-search-term").val().trim();
-//     $("#gif-search-term").val("");
-//     if (gifTopic !== ""){
-//         topics.push(gifTopic); // not strictly necessary, but in case want to reload all buttons
-//         create_gif_button(gifTopic);
-//     }
-// });
-
-// // buttons search using giphy api, limited to 10 gifs that start off frozen and can be clicked to animate
-// $(document).on("click", ".gifSearchButton", function() {
-//     var gifSearch = $(this).attr("data-gif");
-//     var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + gifSearch + "&api_key=dc6zaTOxFJmzC&limit=10";
-
-//     $("#gifs-appear-here").empty();  
-
-//     $.ajax({
-//             url: queryURL,
-//             method: "GET"
-//           }).done(function(response) {
-
-//             console.log(response);
-
-//             var results = response.data;
-
-//             for (var i = 0; i < results.length; i++) {
-                
-//                 var giphyDiv = $("<div class='item'>");
-//                 var p = $("<p>");
-//                 var giphyImage = $("<img>");
-//                 giphyImage.attr("src", results[i].images.fixed_height_still.url);
-//                 giphyImage.attr("data-still", results[i].images.fixed_height_still.url);
-//                 giphyImage.attr("data-animate", results[i].images.fixed_height.url);
-//                 giphyImage.attr("class", "gif");
-//                 giphyImage.attr("data-state", "still")
-
-//                 $(p).text("Rating: " + results[i].rating);
-
-//                 giphyDiv.prepend(p);
-//                 giphyDiv.prepend(giphyImage);
-//                 $("#gifs-appear-here").prepend(giphyDiv);        
-//             }
-//     });
-// });
-
-// //freezes/unfreezes gifs when clicked
-//  $(document).on("click", ".gif", function() {
-
-//       var state = $(this).attr("data-state");
-
-//       console.log(state);
-
-//       if (state === "still"){
-//           $(this).attr("src", $(this).attr("data-animate"));
-//           $(this).attr("data-state", "animate");
-//       }
-//       else {
-//           $(this).attr("src", $(this).attr("data-still"));
-//           $(this).attr("data-state", "still");
-//       }
-//     });
-// });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // $(document).ready(function() {
-
-// // //defining all global variables
-// // var currentScore = 0;
-// // var right_answers = 0; var wrong_answers = 0;
-// // var answered_right = "";
-// // var quiz_ended = "false";
-// // var current_question = 0;
-// // var countdown;
-// // var countdown_number;
-// // var answered_timeout = false;
-
-// // //quiz questions, array of objects with a list of questions, answers, and the correct answer.
-// // var trivia_array = [{
-// //         question : "What color is a black bear?",
-// //         answers : ["Black", "Yellow", "Blue", "Red"],
-// //         correctAnswer : "Black"
-// //     },{
-// //         question : "What color is a brown bear?",
-// //         answers : ["Brown", "Orange", "Pink", "White"],
-// //         correctAnswer : "Brown"
-// //     },{
-// //         question : "What color is a purple bear?",
-// //         answers : ["Purple", "Gray", "Green", "Purple bears don't exist"],
-// //         correctAnswer : "Purple bears don't exist"
-// //     }
-// //     ];
-
-// // // first countdown call, set timer at one more than desired wait.
-// // function countdown_init() {
-// //     answered_timeout = false;
-// //     countdown_number = 4;
-// //     $("#countdown-text").html("Time remaining: ")
-// //     countdown_trigger();
-// // }
-
-// // //timer countsdown, if at 0 goes to the answer function
-// // function countdown_trigger(){
-// //     if (countdown_number > 0) {
-// //         countdown_number--;
-// //         $("#countdown-text-time").html(countdown_number);
-// //         if(countdown_number > 0) {
-// //             countdown = setTimeout(countdown_trigger, 1000);
-// //         }
-// //     } 
-// //     if (countdown_number === 0) {
-// //         answered_right = "wrong";
-// //         answered_timeout = true;
-// //         countdown_clear();
-// //         answer_page();
-// //     }
-// // }
-
-// // function countdown_clear(){
-// //     clearTimeout(countdown);
-// //     $("#countdown-text").empty();
-// //     $("#countdown-text-time").empty();
-// // }
-
-// // //when asking a question, reads current position in question array and adds buttons for answers, as well as adding a data-var for in/correct answer
-// // function next_question(){
-// //     if (current_question === trivia_array.length){
-// //         game_end();
-// //     } else {
-// //     $("#game-information").empty();
-// //     $("#game-information").html(trivia_array[current_question].question)
-// //         for (var i = 0; i < trivia_array[current_question].answers.length; i++) {
-// //             var a = $("<button>");
-// //             // Adding a class
-// //             a.addClass("answer_button btn-primary btn-lg");
-// //             // Added a data-attribute
-// //             if (trivia_array[current_question].answers[i] === trivia_array[current_question].correctAnswer){
-// //                 a.attr("data-answer", "correct");
-// //             } else{
-// //             a.attr("data-answer", "wrong");
-// //             }
-// //             // Provided the initial button text
-// //             a.text(trivia_array[current_question].answers[i]);
-// //             // Added the button to the HTML
-// //             $("#game-answer-buttons").append(a).append("  ");
-// //         }
-// //         countdown_init();
-
-// //     }
-// // };
-
-// // //when a question answered or timed out, displays info for 3 seconds then calls the next question
-// // function answer_page() {
-// //     $("#game-information").empty();
-// //     $("#game-questions").empty();
-// //     $("#game-answer-buttons").empty();
-// //     if (answered_right === "correct"){
-// //         right_answers++;
-// //         $(".win").html(right_answers);
-// //         $(".loss").html(wrong_answers);
-// //         $("#game-information").html("Congratulations!  That was the right answer!")
-// //         setTimeout(next_question, 3000);   
-// //     } else if (answered_timeout === true) {
-// //         wrong_answers++;
-// //         $(".win").html(right_answers);
-// //         $(".loss").html(wrong_answers);
-// //         $("#game-information").html("Sorry, you failed to answer the question in time.  The correct answer was: " + trivia_array[current_question].correctAnswer)
-// //         setTimeout(next_question, 3000);   
-// //     } else {
-// //         wrong_answers++;
-// //         $(".win").html(right_answers);
-// //         $(".loss").html(wrong_answers);
-// //         $("#game-information").html("Sorry, you failed to answer correctly.  The correct answer was: " + trivia_array[current_question].correctAnswer)
-// //         setTimeout(next_question, 3000);   
-// //     }     
-// //     current_question++;
-// // }
-
-// // //end of game
-// // function game_end() {
-// //     $("#game-information").html("Phew, that's all the questions for today.  Thanks for playing!  If you'd like to play again, please press any key.");
-// //     $("#game-questions").empty();
-// //     document.onkeyup = function(event) {
-// //         var quiz_ended = "false";
-// //         current_question = 0;
-// //         answered_timeout = false;
-// //         next_question();
-// //     }
-// // }    
-
-// // //running the start of game function for the first time, with delay to show instructions
-// // //TODO: Add document.onkeyup to start when user presses a key?
-// // setTimeout(next_question,3000);
-
-// // //on-click functions for each of the answer buttons, which use a data variable stored when button created to check if its the correct answer
-// // $("#game-answer-buttons").on("click", ".answer_button", function() {
-// //     countdown_clear();
-// //     // console.log("this button worked")
-// //     answered_right = $(this).attr("data-answer")
-// //     answer_page();
-// //     });
-
-
-// // });
 
