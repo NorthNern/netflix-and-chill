@@ -366,8 +366,8 @@ $(document).ready(function() {
           movieRow
                // 
                .append($('<div class="col-sm-2 text-center wrapper">' + 
-                '<div class="poster" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '">' + 
-                '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div></div>'))
+                '<div class="poster">' + 
+                '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
                .appendTo("#movie"+i);
                console.log(movieChoices[i].overview);
 
