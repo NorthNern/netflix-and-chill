@@ -10,8 +10,8 @@ body {
 
 
 #map { /*Needed to display map in HTML*/
-  height: 500px;
-  width: 100%;
+  height: 300px;
+  width: 300px;
   visibility: hidden;
 }
 
@@ -20,6 +20,11 @@ html, body { /*Needed to display map in HTML*/
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
 }
 
 /*div {
