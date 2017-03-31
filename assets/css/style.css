@@ -15,7 +15,8 @@ body {
 	opacity: 0.4;
   box-shadow: 10px 10px;
   font-family: 'Special Elite', cursive;
-  font-weight: bold;
+  font-weight: 900;
+  color:white;
 }
 
 
@@ -38,7 +39,14 @@ html, body { /*Needed to display map in HTML*/
   width: 100%;
 }
 
+#inspirButton{
+  background-color: Transparent;
+}
 
+#popcornBack{
+  background-color: Transparent;
+  border: none;
+}
 /*div {
 	color: #00264d;
 }*/
