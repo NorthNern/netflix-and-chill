@@ -1,15 +1,19 @@
 ///IMPORTANT:  Testindex loads this and works, some of the css styling might be necessary for google map to appear correctly
 // copy and paste info from testindex such as css and <script> information if things break
 
-
+// VERY IMPORTANT TODO:  Our stuff triggers on button click - prevent 'pressing enter'in address field or work around it!
 //IMPORTANT TODO:  If google maps returns no results on new search, say something like "Sorry, there are no places currently open that offer xxx delivery in your area.  Try one of these options instead!"
 //...then return a much more generic search for any delivery food nearby
 
 //TODO:  add command to remove old mapmarkers (put in new search function)
 
+//TODO:  Add in brief description of what app does in the summary popup/modal (find 5 movies plus a bonus option from the last person to use this site, and up to 5 nearby places that deliver a type of food that fits your movie genre!)
+
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+
+//TODO:  Currently could only be rolled out in urban areas - would need to detect and expand delivery searchers for rural/suburban areas (or else not enough close by results for specific food types)
 
 //Firebase Config
 var config = {
@@ -30,7 +34,7 @@ var dataRef = firebase.database();
 var map;
 var infowindow;
 var service;
-var userPlaceIdFromGoogleApi;
+//var userPlaceIdFromGoogleApi;
 var userLocationFromGoogleApi = {lat: 41.881, lng: -87.623}; // starts nearby search off in chicago if can't read geolocation.
 var userLocationFromGoogleApi2;
 var placeSearch, autocomplete;
@@ -43,6 +47,7 @@ var componentForm = {
   country: 'long_name',
   postal_code: 'short_name'
 };
+var markers = [];
 
 //Movie global variables
 var movieApiKey = "389d68be11b0e85f0a15885dff0f20ce"; //api key for themoviedb
@@ -69,13 +74,15 @@ var posterPath = "http://image.tmdb.org/t/p/w185";
 var weightedRandom;
 var foodArray = [];
 var foodArrayAction = ["american", "chicken", "pizza", "wings"];
-var foodArrayHorror = ["bakery", "dessert", "sandwiches"];  //easy to eat / comfort foods?
-var foodArrayComedy = ["bbq", "breakfast", "cheesesteaks", "chili"]; //messy foods?
-var foodArrayRomance = ["ice cream", "italian", "thai"];
+var foodArrayHorror = ["bakery", "sandwiches"];  //easy to eat / comfort foods?
+var foodArrayComedy = ["bbq", "breakfast"]; //messy foods?
+var foodArrayRomance = ["dessert", "italian", "thai"];
 var foodArrayDocumentary = ["asian", "chinese", "indian", "vegetarian"];  //ethnic foods?
 var foodArrayAnimation = ["fast food", "mexican", "pizza"];  //family foods?
 var foodArrayDrama = ["asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
 var lastMovie;
+var firebaseMovie;
+var locationSubmitted = true;
 
 
 if (navigator.geolocation) {
@@ -84,19 +91,17 @@ if (navigator.geolocation) {
         console.log('Geolocation is not supported for this Browser/OS.');
 }
 
+  //This gets the user's current position on load to help address autocomplete function better (it looks at nearby addresses first)
 window.onload = function() {
   var startPos;
   var startLat;
   var startLon;
 
-
-  //TODO:  See why this works.  Looks like we never call geosuccess?
   var geoSuccess = function(position) {
     startPos = position;
     startLat = startPos.coords.latitude;
     startLon = startPos.coords.longitude;
   };
-  //This gets the user's current position to help map autocomplete function better (it looks at nearby addresses first)
   navigator.geolocation.getCurrentPosition(function(position) {
     userLocationFromGoogleApi = {
       lat: position.coords.latitude,
@@ -106,7 +111,7 @@ window.onload = function() {
   });
 };
 
-//Everything on this function loads with page thanks to initmap=callback in html script.  
+//Everything on this function loads with page thanks to callback=initmap in html script.  
 //Initmap was combined with the 'autocomplete' function to get both a map and a searchable address bar.
 function initMap() {
   // Create the autocomplete object, restricting the search to geographical
@@ -127,69 +132,46 @@ function initMap() {
 
   infowindow = new google.maps.InfoWindow();
   service = new google.maps.places.PlacesService(map);
-
-  //TODO: I think we can remove the following nearbySearch entirely, test to make sure it works (it searches when map loads, but we search on button click)
-  service.nearbySearch({
-    location: userLocationFromGoogleApi,
-    radius: 500,
-    //openNow: true,
-    keyword: 'pizza', // take in a variable for food
-    type: ['restaurant']
-  }, callback);
 }
-//TODO: I think the following comments can be deleted once everything works, it was old marker details section  
-       // var request = { reference: place.reference };
-
-       //  service.getDetails(request, function(details, status) {
-       //    google.maps.event.addListener(marker, 'click', function() {
-       //      infowindow.setContent(details.name + "<br />" + details.formatted_address +"<br />" + details.website + "<br />" + details.rating + "<br />" + details.formatted_phone_number);
-       //    });
-       //    infowindow.open(map, this);
-       //  });
-  
 
 function fillInAddress() {   // Get the place details from the autocomplete object.
   var place = autocomplete.getPlace();        
-  userPlaceIdFromGoogleApi = place.place_id; //place id is generally static and could be stored if desired in future (saving locations)
+  //userPlaceIdFromGoogleApi = place.place_id; //place id is generally static and could be stored if desired in future (saving locations)
   userLocationFromGoogleApi = place.geometry.location; // see above, might be useful in future
   userLocationFromGoogleApi2 = {
     lat: place.geometry.location.lat(),
     lng: place.geometry.location.lng()
   }
-  for (var component in componentForm) {
-    document.getElementById(component).value = '';
-    document.getElementById(component).disabled = false;
-  }
-    // Get each component of the address from the place details
-    // and fill the corresponding field on the form.
-  for (var i = 0; i < place.address_components.length; i++) {
-    var addressType = place.address_components[i].types[0];
-    if (componentForm[addressType]) {
-    var val = place.address_components[i][componentForm[addressType]];
-      document.getElementById(addressType).value = val;
-    }
+  //The following section filled out address fields (before we removed) - can add back in if we want to display/store them.
+  // for (var component in componentForm) {
+  //   document.getElementById(component).value = '';
+  //   document.getElementById(component).disabled = false;
+  // }
+  //   // Get each component of the address from the place details
+  //   // and fill the corresponding field on the form.
+  // for (var i = 0; i < place.address_components.length; i++) {
+  //   var addressType = place.address_components[i].types[0];
+  //   if (componentForm[addressType]) {
+  //   var val = place.address_components[i][componentForm[addressType]];
+  //     document.getElementById(addressType).value = val;
+  //   }
+  // }
+}
+
+function setMapOnAll(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
   }
 }
-  //TODO:  Can remove the following commented section once page works, is a different way of using browser location (we instead focus on page load)
-        // Bias the autocomplete object to the user's geographical location,
-      // as supplied by the browser's 'navigator.geolocation' object.
-      // function geolocate() {
-      //   if (navigator.geolocation) {
-      //     navigator.geolocation.getCurrentPosition(function(position) {
-      //       var geolocation = {
-      //         lat: position.coords.latitude,
-      //         lng: position.coords.longitude
-      //       };
-      //       console.log(geolocation);
-      //       var circle = new google.maps.Circle({
-      //         center: geolocation,
-      //         radius: position.coords.accuracy
-      //       });
-      //       console.log(circle);
-      //       autocomplete.setBounds(circle.getBounds());
-      //     });
-      //   }
-      // }
+
+function clearMarkers() {
+  setMapOnAll(null);
+}
+
+function deleteMarkers(){
+  clearMarkers();
+  markers = [];
+}
 
 function callback(results, status) {
   if (status === google.maps.places.PlacesServiceStatus.OK) {
@@ -207,6 +189,7 @@ function createMarker(place) {
     placeId: place.place_id,
     position: place.geometry.location
   });
+  markers.push(marker);
 
   google.maps.event.addListener(marker, 'click', function() {
     service.getDetails(place, function(result, status) {
@@ -214,28 +197,37 @@ function createMarker(place) {
         console.error(status);
         return;
       }
-      //TODO:  Add if statement to only display website if it exists, else display result.url (googles info), or nothing. 
+      //Added if statement to only display website if it exists, else display result.url (googles info), or nothing. 
       //i think if (result.website === undefined) would work for version with result.url.
-      infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
-      result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
-      '<br />' + result.formatted_phone_number + '<br />' +  '<a  target="_blank" href=' + 
-      result.website + '>' + result.website + '</a></p>' ) ;
+      if (result.website === undefined) {
+        infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
+        result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
+        '<br />' + result.formatted_phone_number + '<br />' +  '<a  target="_blank" href=' + 
+        result.url + '>' + result.url + '</a></p>' ) ;
+      } else {
+        infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
+        result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
+        '<br />' + result.formatted_phone_number + '<br />' +  '<a  target="_blank" href=' + 
+        result.website + '>' + result.website + '</a></p>' ) ;
+      }
     });
     infowindow.open(map, this);
   });
 }
 
 function searchNewLocation(referenceLocation){
+  // console.log ("random food position: " + Math.floor(Math.random()*foodArray.length));
+  foodChoice = foodArray[Math.floor(Math.random()*foodArray.length)]
+  // console.log ("Your food for this movie is: " + foodChoice);
+  //TODO:  put the above in a display div
   var googleRequest = {
     location: referenceLocation,
     radius: 800,
     // openNow: true,  OPTIONAL:  Could uncomment this in future - Could be helpful, but extremely limits results.
-    //optionalTODO:  see if there's a 'delivery' status, might be helpful
-    keyword: 'pizza', // TODO: take in a variable for food, random selection from food arrays
-    type: ['restaurant']
+    keyword: foodChoice, // TODO: take in a variable for food, random selection from food arrays
+    type: ['meal_delivery']
+    //futureTODO:  If not enough results come back, instead search results for type: [meal_takeaway], or any generic delivery
   };
-  console.log("searchNewLocationWorked");
-  console.log(referenceLocation);
   infowindow = new google.maps.InfoWindow();
   var googleService = new google.maps.places.PlacesService(map);
   googleService.nearbySearch(googleRequest, callback);
@@ -245,11 +237,21 @@ function searchNewLocation(referenceLocation){
 //document.ready interferes with google functions (google loads on page start already) so only included below
 $(document).ready(function() {
 
-  $("#form-submit").on("click", function() {
-    initMap();
-    searchNewLocation(userLocationFromGoogleApi2)
-    $("#map").css("visibility", "visible");
-  });  
+  //prevents hitting 'enter' instead of using button to submit
+  $(document).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      return false;
+    }
+  });
+
+  //Commented out because combined with movie code button push below
+  // $("#form-submit").on("click", function() {
+  //   deleteMarkers();
+  //   initMap();
+  //   searchNewLocation(userLocationFromGoogleApi2)
+  //   $("#map").css("visibility", "visible");
+  // });  
 
   //END GOOGLE MAPS CODE, START MOVIE CODE----------------------------------------------
 
@@ -257,7 +259,6 @@ $(document).ready(function() {
     foodArray = [];
     for (var i = 0; i < chosenGenreArray.length; i++) {
       foodArray.push(chosenGenreArray[i]);
-      console.log(foodArray[i]);
     }
   }
 
@@ -301,15 +302,17 @@ $(document).ready(function() {
 
   $(document).on("click", "#form-submit", function() {
     
-    if ($("#autocomplete-field").val() === ''){
-      return false;
+    if ($("#autocomplete-field").val() === ''){      
+      locationSubmitted = false;
+      //TODO:  Replace address text with a message prompting user to insert a location if they want food options.
+      //return false;  -- this would also stop movies reloading if we want a firm prompt
     }
 
     event.preventDefault();
    
-    $("#form-submit").text("Don't like what you see? Click to start over!")
+    $("#form-submit").text("Don't like what you see? Click here to try again!")
 
-    var movieGenre = $("#genre-input").val().trim(); //TODO: to lower case or use drop down
+    var movieGenre = $("#genre-input").val().trim();
     if (movieGenre === "action"){
       movieGenreId = "28";
       fillFoodArray(foodArrayAction);
@@ -337,6 +340,14 @@ $(document).ready(function() {
     if (movieGenre === "drama"){
       movieGenreId = "18";
       fillFoodArray(foodArrayDrama);
+    }
+
+
+    if (locationSubmitted === true){
+      deleteMarkers();
+      initMap();
+      searchNewLocation(userLocationFromGoogleApi2);
+      $("#map").css("visibility", "visible");
     }
 
     // $("#genre-input").val("");  //blanks out genre if we decide we want that
@@ -370,8 +381,8 @@ $(document).ready(function() {
         movieChoices = []
         var movieRow = $("#movie-row");
         movieRow.empty();
-        console.log(queryURL)
-        console.log(response) 
+        // console.log(queryURL)
+        // console.log(response) 
         searchSelectOptions = [];
         for (var i=0; i < 20; i++){
           searchSelectOptions.push(i);  // creates an array for choosing random movies from results page without repeats
@@ -380,7 +391,7 @@ $(document).ready(function() {
       
           //gets random movie from 1-20 of results. 
           chooseMovieFromApi(response);
-          console.log("movieChoices i = " + movieChoices[i])
+          // console.log("movieChoices i = " + movieChoices[i])
           movieRow
                // 
                .append($('<div class="col-sm-2 text-center wrapper">' + 
@@ -397,13 +408,27 @@ $(document).ready(function() {
           $('[data-toggle="popover"]').popover()
         }
 
+        movieRow
+               // 
+               .append($('<div class="col-sm-2 text-center wrapper">' + 
+                '<div class="poster">' + 
+                '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
+               .appendTo("#movie"+i);
+
         dataRef.ref().push({
           lastMovie : lastMovie,
         });
 
-          dataRef.ref().on("child_added", function(childSnapshot) {
-          lastMovie = childSnapshot.val();
-          console.log(lastMovie);
+        dataRef.ref().on("child_added", function(childSnapshot) {
+        firebaseMovie = childSnapshot.val();
+        console.log(firebaseMovie);
+        movieRow
+               // 
+               .append($('<div class="col-sm-2 text-center wrapper">' + 
+                '<div class="poster">' + 
+                '<img src="' + posterPath + firebaseMovie.poster_path + '" data-toggle="popover" data-trigger="hover" title="' + firebaseMovie.title + '" data-content="' + firebaseMovie.overview + '"></div></div>'))
+               .appendTo("#movie"+5);
+
         });
       });
 
