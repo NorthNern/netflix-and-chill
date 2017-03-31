@@ -13,6 +13,20 @@
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
+//Firebase Config
+var config = {
+    apiKey: "AIzaSyA91xHzvNhMfK_pbS76BNLzJMwNtY8Xp6U",
+    authDomain: "dinner-and-movie-6e639.firebaseapp.com",
+    databaseURL: "https://dinner-and-movie-6e639.firebaseio.com",
+    projectId: "dinner-and-movie-6e639",
+    storageBucket: "dinner-and-movie-6e639.appspot.com",
+    messagingSenderId: "715283396911"
+  };
+  
+firebase.initializeApp(config);
+
+var dataRef = firebase.database();
+
 
 //GOOGLE MAPS global variables
 var map;
@@ -63,6 +77,7 @@ var foodArrayRomance = ["ice cream", "italian", "thai"];
 var foodArrayDocumentary = ["asian", "chinese", "indian", "vegetarian"];  //ethnic foods?
 var foodArrayAnimation = ["fast food", "mexican", "pizza"];  //family foods?
 var foodArrayDrama = ["asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
+var lastMovie;
 
 
 if (navigator.geolocation) {
@@ -288,6 +303,9 @@ $(document).ready(function() {
 
   $(document).on("click", "#form-submit", function() {
     event.preventDefault();
+   
+    $("#form-submit").text("Don't like what you see? Click to start over!")
+
     var movieGenre = $("#genre-input").val().trim(); //TODO: to lower case or use drop down
     if (movieGenre === "action"){
       movieGenreId = "28";
@@ -318,7 +336,7 @@ $(document).ready(function() {
       fillFoodArray(foodArrayDrama);
     }
 
-    $("#genre-input").val("");  //TODO: remove? might not be necessary with drop down selections
+    // $("#genre-input").val("");  //blanks out genre if we decide we want that
     //following section makes it more likely to choose more popular movies, but still possible for others
     weightedRandom = (Math.ceil(Math.random()*5)); 
     if (weightedRandom = 1) {      
@@ -359,20 +377,39 @@ $(document).ready(function() {
         searchSelectOptions.push(i);  // creates an array for choosing random movies from results page without repeats
       }
       for (var i=0; i < 5; i++) {
-
+      
         //gets random movie from 1-20 of results. 
         chooseMovieFromApi(response);
+
         // console.log("movieChoices i = " + movieChoices[i])
         $("<div />", { "class":"wrapper", id:"movie"+i })
         .append($('<div class="title">' + '<li>' + movieChoices[i].title + '</li>' + '</div>'))
         .append($('<div class="poster">'+ '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div>'))
         .append($('<div class="overview">' + '<p>' + movieChoices[i].overview + '</p>' + '</div>'))
         .appendTo("#movie"+i);
-        // console.log(movieChoices[i].overview);
+   
+        lastMovie = movieChoices[i];
+       // console.log(lastMovie);
 
-          // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a testing line TODO: delete
+        // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a testing line TODO: delete
       }
+
+        dataRef.ref().push({
+          lastMovie : lastMovie,
+        });
+
+          dataRef.ref().on("child_added", function(childSnapshot) {
+          lastMovie = childSnapshot.val();
+          console.log(lastMovie);
+        });
     });
+
+    // var title = "test";
+
+    // dataRef.ref().push({
+
+    //     title : title,
+    //   });
   });
 });
 
