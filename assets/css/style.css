@@ -1,18 +1,26 @@
 body {
     background-image: url("../../assets/images/rainy.jpg");
+    font-family: 'Coda';
+    font-size: 22px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 .jumbotron {
-	background-color: white !important;
-	opacity: 0.4;
+  background-color: white !important;
+  opacity: 0.4;
+  font-family: 'Special Elite', cursive;
+  font-weight: 900;
+  color: white;
 }
 
 
 #map { /*Needed to display map in HTML*/
-  height: 300px;
-  width: 300px;
+  height: 350px;
+  width: 100%;
   visibility: hidden;
+  margin-top: 15px;
 }
 
 html, body { /*Needed to display map in HTML*/
@@ -22,28 +30,42 @@ html, body { /*Needed to display map in HTML*/
   padding: 0;
 }
 
+
 .container {
   height: 100%;
   width: 100%;
 }
 
+#inspirButton{
+  background-color: Transparent;
+  box-shadow: 0px 0px 5px gray;
+}
+
+#popcornBack{
+  background-color: Transparent;
+  border: none;
+}
 /*div {
-	color: #00264d;
+  color: #00264d;
 }*/
 
 /*.panel-heading {
-	background-color: white;
-	opacity: 0.1;
+  background-color: white;
+  opacity: 0.1;
 }
 
 .panel-body {
-	background-color: white;
-	opacity: 0.1;
+  background-color: white;
+  opacity: 0.1;
 }*/
 
+.popover {
+  width: 200%;
+}
+
 .panel.panel-default {
-/*	background-color: white;*/
-	opacity: 0.7;
+/*  background-color: white;*/
+  opacity: 0.7;
 }
 
 /*Curtain styling*/
@@ -103,6 +125,7 @@ body,
   background: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2) 60%), radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2) 40%);
   background-attachment: fixed;
   background-position: -80px 0, 80px 0;
+  transition: opacity 3s;
 }
 #stage.opening #curtain-left {
   width: 0;
@@ -120,6 +143,9 @@ body,
 }
 #stage.opening .balance {
   height: 0;
+}
+#stage.opening .spotlight{
+  opacity: 0;
 }
 #stage.opened {
   display: none;
