@@ -1,6 +1,5 @@
 body {
     background-image: url("../../assets/images/rainy.jpg");
-    font-family: 'Coda';
     font-size: 22px;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-repeat: no-repeat;
@@ -11,7 +10,6 @@ body {
   background-color: white !important;
   opacity: 0.4;
   font-family: 'Special Elite', cursive;
-  font-weight: 900;
   color: white;
 }
 
@@ -37,27 +35,13 @@ html, body { /*Needed to display map in HTML*/
 }
 
 #inspirButton{
-  background-color: Transparent;
-  box-shadow: 0px 0px 5px gray;
+  font-family: 'Special Elite', cursive;
 }
 
 #popcornBack{
   background-color: Transparent;
   border: none;
 }
-/*div {
-  color: #00264d;
-}*/
-
-/*.panel-heading {
-  background-color: white;
-  opacity: 0.1;
-}
-
-.panel-body {
-  background-color: white;
-  opacity: 0.1;
-}*/
 
 .popover {
   width: 200%;
@@ -65,6 +49,7 @@ html, body { /*Needed to display map in HTML*/
 
 .panel.panel-default {
 /*  background-color: white;*/
+  font-family: 'Special Elite', cursive;
   opacity: 0.7;
 }
 
