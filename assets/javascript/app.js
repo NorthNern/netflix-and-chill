@@ -379,6 +379,6 @@ $(document).ready(function() {
       });
     });
   });
-});
+// });
 
 
