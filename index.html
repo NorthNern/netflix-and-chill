@@ -2,12 +2,6 @@
 <html lang="en-us">
 
 <head>
-   <meta charset="UTF-8">
-    <title>Project Test</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
-    <link rel="stylesheet" type=text/css href="assets/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <meta name="viewport" content="width-device-width", initial-scale-1">
  <meta charset="UTF-8">
  <title>Dinner and a Movie</title>
 
@@ -97,7 +91,6 @@
               <!-- Location input -->
               <div class="form-group">
                 <label for="address-input">Enter your location here!</label>
-                <input class="form-control" id="name-input" type="text" placeholder="6299 Hollywood Blvd, Los Angeles, CA 90028">
                 <input class="form-control" id="autocomplete-field" type="text" placeholder="6299 Hollywood Blvd, Los Angeles, CA 90028">
               </div>
 
@@ -168,10 +161,10 @@
           </div> <!-- closes div where movies appear -->
     </div>  <!-- closes movie row -->
 
+    <div id="map"></div> <!-- Displays Google map -->
 
   </div>  <!-- closes container -->
 
-<div id="map"></div> <!-- Displays Google map -->
 
   <!-- Stage Curtains -->
   <div id="stage">
@@ -181,7 +174,6 @@
    <div class="spotlight"></div>
  </div>
 
-<div id="map"></div>
 
  <script type="text/javascript" src="assets/javascript/app.js"></script>
  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZEorXwDhgJ0yXHtzrQUH5looyzWRrKng&libraries=places&callback=initMap" async defer></script>
