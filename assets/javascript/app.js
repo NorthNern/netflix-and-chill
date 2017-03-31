@@ -285,6 +285,11 @@ $(document).ready(function() {
 
 
   $(document).on("click", "#form-submit", function() {
+    
+    if ($("#autocomplete-field").val() === ''){
+      return false;
+    }
+
     event.preventDefault();
     var movieGenre = $("#genre-input").val().trim(); //TODO: to lower case or use drop down
     if (movieGenre === "action"){
