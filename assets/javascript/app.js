@@ -1,5 +1,3 @@
-
-
 ///IMPORTANT:  Testindex loads this and works, some of the css styling might be necessary for google map to appear correctly
 // copy and paste info from testindex such as css and <script> information if things break
 
@@ -302,6 +300,11 @@ $(document).ready(function() {
 
 
   $(document).on("click", "#form-submit", function() {
+    
+    if ($("#autocomplete-field").val() === ''){
+      return false;
+    }
+
     event.preventDefault();
    
     $("#form-submit").text("Don't like what you see? Click to start over!")
@@ -361,38 +364,38 @@ $(document).ready(function() {
     $.ajax({
       //could use firebase to store movies already seen (or add option to remove in html, and not show those movies again)
 
-      url: queryURL,
-      method: 'GET'
-    }).done(function(response) {
-      movieChoices = []
-      $('#movie0').empty();
-      $('#movie1').empty();
-      $('#movie2').empty();
-      $('#movie3').empty();
-      $('#movie4').empty();
-      console.log(queryURL)
-      console.log(response) 
-      searchSelectOptions = [];
-      for (var i=0; i < 20; i++){
-        searchSelectOptions.push(i);  // creates an array for choosing random movies from results page without repeats
-      }
-      for (var i=0; i < 5; i++) {
+        url: queryURL,
+        method: 'GET'
+      }).done(function(response) {
+        movieChoices = []
+        var movieRow = $("#movie-row");
+        movieRow.empty();
+        console.log(queryURL)
+        console.log(response) 
+        searchSelectOptions = [];
+        for (var i=0; i < 20; i++){
+          searchSelectOptions.push(i);  // creates an array for choosing random movies from results page without repeats
+        }
+        for (var i=0; i < 5; i++) {
       
-        //gets random movie from 1-20 of results. 
-        chooseMovieFromApi(response);
-
-        // console.log("movieChoices i = " + movieChoices[i])
-        $("<div />", { "class":"wrapper", id:"movie"+i })
-        .append($('<div class="title">' + '<li>' + movieChoices[i].title + '</li>' + '</div>'))
-        .append($('<div class="poster">'+ '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div>'))
-        .append($('<div class="overview">' + '<p>' + movieChoices[i].overview + '</p>' + '</div>'))
-        .appendTo("#movie"+i);
+          //gets random movie from 1-20 of results. 
+          chooseMovieFromApi(response);
+          console.log("movieChoices i = " + movieChoices[i])
+          movieRow
+               // 
+               .append($('<div class="col-sm-2 text-center wrapper">' + 
+                '<div class="poster">' + 
+                '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
+               .appendTo("#movie"+i);
    
         lastMovie = movieChoices[i];
        // console.log(lastMovie);
 
-        // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a testing line TODO: delete
-      }
+          // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
+
+          //Allows the user to hover/toggle over the poster and see the appropriate information specific for that movie
+          $('[data-toggle="popover"]').popover()
+        }
 
         dataRef.ref().push({
           lastMovie : lastMovie,
@@ -402,7 +405,7 @@ $(document).ready(function() {
           lastMovie = childSnapshot.val();
           console.log(lastMovie);
         });
-    });
+      });
 
     // var title = "test";
 
@@ -410,7 +413,8 @@ $(document).ready(function() {
 
     //     title : title,
     //   });
+    });
   });
-});
+// });
 
 
