@@ -20,6 +20,7 @@ body {
   height: 350px;
   width: 100%;
   visibility: hidden;
+  margin-top: 15px;
 }
 
 html, body { /*Needed to display map in HTML*/
