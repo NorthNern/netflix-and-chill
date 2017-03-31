@@ -22,6 +22,10 @@ body {
 	opacity: 0.1;
 }*/
 
+.popover {
+  width: 200%;
+}
+
 .panel.panel-default {
 /*	background-color: white;*/
 	opacity: 0.7;
@@ -84,6 +88,7 @@ body,
   background: radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2) 60%), radial-gradient(circle, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2) 40%);
   background-attachment: fixed;
   background-position: -80px 0, 80px 0;
+  transition: opacity 3s;
 }
 #stage.opening #curtain-left {
   width: 0;
@@ -101,6 +106,9 @@ body,
 }
 #stage.opening .balance {
   height: 0;
+}
+#stage.opening .spotlight{
+  opacity: 0;
 }
 #stage.opened {
   display: none;

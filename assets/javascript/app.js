@@ -1,5 +1,3 @@
-
-
 ///IMPORTANT:  Testindex loads this and works, some of the css styling might be necessary for google map to appear correctly
 // copy and paste info from testindex such as css and <script> information if things break
 
@@ -271,6 +269,13 @@
   //document.ready interferes with google functions (loads on page start already, so included below)
   $(document).ready(function() {
 
+        //When the user pushes the popcorn button the modal and popcorn button should disappear and the form should appear for the user to enter their information
+        $(".popcornBtn").on("click", ".popcorn", function(){
+          console.log("working");
+          $(".containerModal").fadeOut();
+          $(".popcornBtn").fadeOut(); 
+        });
+
       $(".submit-button").on("click", function() {
         console.log("this button works")
         console.log(userLocationFromGoogleApi2)
@@ -424,11 +429,8 @@
         method: 'GET'
       }).done(function(response) {
         movieChoices = []
-        $('#movie0').empty();
-        $('#movie1').empty();
-        $('#movie2').empty();
-        $('#movie3').empty();
-        $('#movie4').empty();
+        var movieRow = $("#movie-row");
+        movieRow.empty();
         console.log(queryURL)
         console.log(response) 
         searchSelectOptions = [];
@@ -440,14 +442,18 @@
           //gets random movie from 1-20 of results. 
           chooseMovieFromApi(response);
           console.log("movieChoices i = " + movieChoices[i])
-          $("<div />", { "class":"wrapper", id:"movie"+i })
-               .append($('<div class="title">' + '<li>' + movieChoices[i].title + '</li>' + '</div>'))
-               .append($('<div class="poster">'+ '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div>'))
-               .append($('<div class="overview">' + '<p>' + movieChoices[i].overview + '</p>' + '</div>'))
+          movieRow
+               // 
+               .append($('<div class="col-sm-2 text-center wrapper">' + 
+                '<div class="poster" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '">' + 
+                '<img src=' + posterPath + movieChoices[i].poster_path + '>' + '</div></div>'))
                .appendTo("#movie"+i);
                console.log(movieChoices[i].overview);
 
           // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
+
+          //Allows the user to hover/toggle over the poster and see the appropriate information specific for that movie
+          $('[data-toggle="popover"]').popover()
         }
       });
     });
