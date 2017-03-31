@@ -1,12 +1,41 @@
 body {
     background-image: url("../../assets/images/rainy.jpg");
+<<<<<<< HEAD
+    font-family: 'Coda';
+    font-size: 22px;
+=======
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+>>>>>>> 67873af6d2e58d256f2969b6f8dcd492ddcd2c6d
 }
 
 .jumbotron {
 	background-color: white !important;
 	opacity: 0.4;
+  box-shadow: 10px 10px;
 }
+
+
+#map { /*Needed to display map in HTML*/
+  height: 300px;
+  width: 300px;
+  visibility: hidden;
+}
+
+html, body { /*Needed to display map in HTML*/
+  height: 500px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+
+.container {
+  height: 100%;
+  width: 100%;
+}
+
 
 /*div {
 	color: #00264d;

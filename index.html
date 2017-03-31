@@ -6,8 +6,8 @@
  <title>Dinner and a Movie</title>
 
  <!-- Linking to CSS -->
- <link rel="stylesheet" type="text/css" href="assets/css/style.css">
  <link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+ <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
  <!-- Linking to Bootstrap -->
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -89,7 +89,7 @@
               <!-- Location input -->
               <div class="form-group">
                 <label for="address-input">Enter your location here!</label>
-                <input class="form-control" id="name-input" type="text" placeholder="123 Movie St., Chicago, IL 60660">
+                <input class="form-control" id="autocomplete-field" type="text" placeholder="6299 Hollywood Blvd, Los Angeles, CA 90028">
               </div>
 
               <!-- City input -->
@@ -140,15 +140,22 @@
     <div class="row" id="movie-row">
     </div>  <!-- closes movie row --> 
 
-    </div>  <!-- closes container -->
+    <div id="map"></div> <!-- Displays Google map -->
 
-    <!-- Stage Curtains -->
-      <div id="stage">
-        <div id="curtain-left" class="curtain"></div>
-        <div id="curtain-right" class="curtain"></div>
-        <div id="balance" class="balance"></div>
-        <div class="spotlight"></div>
-      </div>
+  </div>  <!-- closes container -->
 
+
+  <!-- Stage Curtains -->
+  <div id="stage">
+   <div id="curtain-left" class="curtain"></div>
+   <div id="curtain-right" class="curtain"></div>
+   <div id="balance" class="balance"></div>
+   <div class="spotlight"></div>
+ </div>
+
+
+ <script type="text/javascript" src="assets/javascript/app.js"></script>
+ <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCZEorXwDhgJ0yXHtzrQUH5looyzWRrKng&libraries=places&callback=initMap" async defer></script>
+ 
 </body>
 </html>
