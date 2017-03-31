@@ -1,13 +1,10 @@
 body {
     background-image: url("../../assets/images/rainy.jpg");
-<<<<<<< HEAD
     font-family: 'Coda';
     font-size: 22px;
-=======
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-repeat: no-repeat;
     background-attachment: fixed;
->>>>>>> 67873af6d2e58d256f2969b6f8dcd492ddcd2c6d
 }
 
 .jumbotron {
