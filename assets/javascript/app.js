@@ -73,13 +73,13 @@ var movieChoices = []; //**IMPORTANT** this is the array of movies returned afte
 var posterPath = "http://image.tmdb.org/t/p/w185";
 var weightedRandom;
 var foodArray = [];
-var foodArrayAction = ["american", "chicken", "pizza", "wings"];
+var foodArrayAction = ["American", "chicken", "pizza"];
 var foodArrayHorror = ["bakery", "sandwiches"];  //easy to eat / comfort foods?
-var foodArrayComedy = ["bbq", "breakfast"]; //messy foods?
-var foodArrayRomance = ["dessert", "italian", "thai"];
-var foodArrayDocumentary = ["asian", "chinese", "indian", "vegetarian"];  //ethnic foods?
-var foodArrayAnimation = ["fast food", "mexican", "pizza"];  //family foods?
-var foodArrayDrama = ["asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
+var foodArrayComedy = ["BBQ", "breakfast"]; //messy foods?
+var foodArrayRomance = ["dessert", "Italian", "Thai"];
+var foodArrayDocumentary = ["Asian", "Chinese", "Indian", "vegetarian"];  //ethnic foods?
+var foodArrayAnimation = ["fast food", "Mexican", "pizza"];  //family foods?
+var foodArrayDrama = ["Asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
 var lastMovie;
 var firebaseMovieToDisplay;
 var locationSubmitted = true;
@@ -127,7 +127,7 @@ function initMap() {
   //  var chicago = {lat: 41.881, lng: -87.623};  // can use this for testing or to set a location if geolocation not available
   map = new google.maps.Map(document.getElementById('map'), {
     center: userLocationFromGoogleApi,
-    zoom: 15
+    zoom: 14
   });
 
   infowindow = new google.maps.InfoWindow();
@@ -216,10 +216,6 @@ function createMarker(place) {
 }
 
 function searchNewLocation(referenceLocation){
-  // console.log ("random food position: " + Math.floor(Math.random()*foodArray.length));
-  foodChoice = foodArray[Math.floor(Math.random()*foodArray.length)]
-  // console.log ("Your food for this movie is: " + foodChoice);
-  //TODO:  put the above in a display div
   var googleRequest = {
     location: referenceLocation,
     radius: 800,
@@ -322,7 +318,6 @@ $(document).ready(function() {
 
     event.preventDefault();
    
-    $("#form-submit").text("Don't like what you see? Click here to try again!")
 
     var movieGenre = $("#genre-input").val().trim();
     if (movieGenre === "action"){
@@ -353,6 +348,12 @@ $(document).ready(function() {
       movieGenreId = "18";
       fillFoodArray(foodArrayDrama);
     }
+
+    // console.log ("random food position: " + Math.floor(Math.random()*foodArray.length));
+    foodChoice = foodArray[Math.floor(Math.random()*foodArray.length)]
+    console.log ("Your food for this movie is: " + foodChoice);
+    //TODO:  put the above in a display div
+    $("#form-submit").text("Your food for the evening is " + foodChoice + "! Don't like your options? Click here to try again!")
 
 
     if (locationSubmitted === true){
@@ -412,7 +413,7 @@ $(document).ready(function() {
                 '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
                .appendTo("#movie"+i);
         if (i === 0) {
-          lastMovie = movieChoices[i];
+          lastMovie = movieChoices[i]; //made this complicated in case we want to change which/how many movies to store
         }
        // console.log(lastMovie);
 
@@ -433,8 +434,9 @@ $(document).ready(function() {
                // 
                .append($('<div class="col-sm-2 text-center wrapper">' + 
                 '<div class="poster">' + 
-                '<img src="' + posterPath + firebaseMovieToDisplay.poster_path + '" data-toggle="popover" data-trigger="hover" title="' + firebaseMovieToDisplay.title + '" data-content="' + firebaseMovieToDisplay.overview + '"></div></div>'))
+                '<img src="' + posterPath + firebaseMovieToDisplay.poster_path + '" data-toggle="popover" data-trigger="hover" title="BONUS OPTION: ' + firebaseMovieToDisplay.title + '" data-content="' + firebaseMovieToDisplay.overview + '"></div></div>'))
                .appendTo("#movie"+5);
+               $('[data-toggle="popover"]').popover()
       });
 
     // var title = "test";
