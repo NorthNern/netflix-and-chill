@@ -198,12 +198,12 @@ function createMarker(place) {
       //I think if (result.website === undefined) would work for version with result.url.
       if (result.website === undefined) {
         infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
-        result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
+        result.name + '<br />' + 'Rating: ' + result.rating + '</h5><p>' + result.formatted_address + 
         '<br />' + result.formatted_phone_number + '<br />' +  '<a  target="_blank" href=' + 
         result.url + '>' + result.url + '</a></p>' ) ;
       } else {
         infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
-        result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
+        result.name + '<br />' + 'Rating: ' +  result.rating + '</h5><p>' + result.formatted_address + 
         '<br />' + result.formatted_phone_number + '<br />' +  '<a  target="_blank" href=' + 
         result.website + '>' + result.website + '</a></p>' ) ;
       }
@@ -246,10 +246,10 @@ $(document).ready(function() {
   $(".containerModal").fadeOut();
   $(".popcornBtn").fadeOut(); 
 });
-  $(".resultsBtn").on("click", ".btn", function(){
-  console.log("results");
-  $(".row").fadeOut();
-});
+//   $(".resultsBtn").on("click", ".btn", function(){
+//   console.log("results");
+//   $(".row").fadeOut();
+// });
 
   //prevents hitting 'enter' instead of using button to submit
   $(document).keydown(function(event){
@@ -317,13 +317,12 @@ $(document).ready(function() {
     firebaseMovieToDisplay = firebaseMovie.lastMovie;
     
     if ($("#autocomplete-field").val() === ''){      
-      locationSubmitted = false;
+      return false;
       //Possible TODO:  Replace address text with a message prompting user to insert a location if they want food options.
       //return false;  -- this would also stop movies reloading if we want a firm prompt
     }
 
     event.preventDefault();
-   
 
     var movieGenre = $("#genre-input").val().trim();
     if (movieGenre === "action"){
@@ -359,7 +358,7 @@ $(document).ready(function() {
     foodChoice = foodArray[Math.floor(Math.random()*foodArray.length)]
     //console.log ("Your food for this movie is: " + foodChoice);
     //Possible TODO:  put the above in a display div
-    $("#form-submit").text("Your food for the evening is " + foodChoice + "! Don't like your options? Click here to try again!")
+    $("#form-submit").text("Don't like your options? Click here to try again!")
 
 
     if (locationSubmitted === true){
@@ -414,10 +413,10 @@ $(document).ready(function() {
           // console.log("movieChoices i = " + movieChoices[i])
           movieRow
                // 
-               .append($('<div class="col-sm-2 text-center wrapper">' + 
+               .prepend($('<div class="col-sm-2 text-center wrapper">' + 
                 '<div class="poster">' + 
-                '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
-               .appendTo("#movie"+i);
+                '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
+               .prependTo("#movie"+i);
         if (i === 0) {
           lastMovie = movieChoices[i]; //made this complicated in case we want to change which/how many movies to store
         }
@@ -438,10 +437,10 @@ $(document).ready(function() {
         
         movieRow
                // 
-               .append($('<div class="col-sm-2 text-center wrapper">' + 
+               .prepend($('<div class="col-sm-2 text-center wrapper">' + 
                 '<div class="poster">' + 
-                '<img src="' + posterPath + firebaseMovieToDisplay.poster_path + '" data-toggle="popover" data-trigger="hover" title="BONUS OPTION: ' + firebaseMovieToDisplay.title + '" data-content="' + firebaseMovieToDisplay.overview + '"></div></div>'))
-               .appendTo("#movie"+5);
+                '<img src="' + posterPath + firebaseMovieToDisplay.poster_path + '" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="BONUS OPTION: ' + firebaseMovieToDisplay.title + '" data-content="' + firebaseMovieToDisplay.overview + '"></div></div>'))
+               .prependTo("#movie"+5);
                $('[data-toggle="popover"]').popover()
       });
     });
