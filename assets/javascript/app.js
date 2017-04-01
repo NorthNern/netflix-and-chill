@@ -413,10 +413,10 @@ $(document).ready(function() {
           // console.log("movieChoices i = " + movieChoices[i])
           movieRow
                // 
-               .prepend($('<div class="col-sm-2 text-center wrapper">' + 
+               .append($('<div class="col-sm-2 text-center wrapper">' + 
                 '<div class="poster">' + 
                 '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
-               .prependTo("#movie"+i);
+               .appendTo("#movie"+i);
         if (i === 0) {
           lastMovie = movieChoices[i]; //made this complicated in case we want to change which/how many movies to store
         }
@@ -437,10 +437,10 @@ $(document).ready(function() {
         
         movieRow
                // 
-               .prepend($('<div class="col-sm-2 text-center wrapper">' + 
+               .append($('<div class="col-sm-2 text-center wrapper">' + 
                 '<div class="poster">' + 
                 '<img src="' + posterPath + firebaseMovieToDisplay.poster_path + '" data-toggle="popover" data-trigger="hover" data-placement="bottom" title="BONUS OPTION: ' + firebaseMovieToDisplay.title + '" data-content="' + firebaseMovieToDisplay.overview + '"></div></div>'))
-               .prependTo("#movie"+5);
+               .appendTo("#movie"+5);
                $('[data-toggle="popover"]').popover()
       });
     });
