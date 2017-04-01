@@ -91,7 +91,7 @@ if (navigator.geolocation) {
         console.log('Geolocation is not supported for this Browser/OS.');
 }
 
-  //This gets the user's current position on load to help address autocomplete function better (it looks at nearby addresses first)
+//This gets the user's current position on load to help address autocomplete function better (it looks at nearby addresses first)
 window.onload = function() {
   var startPos;
   var startLat;
@@ -198,7 +198,7 @@ function createMarker(place) {
         return;
       }
       //Added if statement to only display website if it exists, else display result.url (googles info), or nothing. 
-      //i think if (result.website === undefined) would work for version with result.url.
+      //I think if (result.website === undefined) would work for version with result.url.
       if (result.website === undefined) {
         infowindow.setContent('<span style="padding: 0px; text-align:left" align="left"><h5>' + 
         result.name + '&nbsp; &nbsp; ' + result.rating + '</h5><p>' + result.formatted_address + 
@@ -242,6 +242,17 @@ $(document).ready(function() {
       console.log("The read failed: " + errorObject.code);
     });
 
+
+  //When the user clicks the popcorn button the modal and popcorn button fade out and the form appears
+  $(".popcornBtn").on("click", ".popcorn", function(){
+  console.log("working");
+  $(".containerModal").fadeOut();
+  $(".popcornBtn").fadeOut(); 
+});
+  $(".resultsBtn").on("click", ".btn", function(){
+  console.log("results");
+  $(".row").fadeOut();
+});
 
   //prevents hitting 'enter' instead of using button to submit
   $(document).keydown(function(event){
@@ -303,8 +314,6 @@ $(document).ready(function() {
     theatreFirstMonth = yyyy - 1;
   }
   theatreFirstDate = theatreFirstYear +'-' + theatreFirstMonth + '-' + dd;
-
-
 
   $(document).on("click", "#form-submit", function() {
 
@@ -438,15 +447,5 @@ $(document).ready(function() {
                .appendTo("#movie"+5);
                $('[data-toggle="popover"]').popover()
       });
-
-    // var title = "test";
-
-    // dataRef.ref().push({
-
-    //     title : title,
-    //   });
     });
   });
-// });
-
-
