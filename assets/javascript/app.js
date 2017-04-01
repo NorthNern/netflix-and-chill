@@ -1,19 +1,16 @@
 ///IMPORTANT:  Testindex loads this and works, some of the css styling might be necessary for google map to appear correctly
 // copy and paste info from testindex such as css and <script> information if things break
 
-// VERY IMPORTANT TODO:  Our stuff triggers on button click - prevent 'pressing enter'in address field or work around it!
-//IMPORTANT TODO:  If google maps returns no results on new search, say something like "Sorry, there are no places currently open that offer xxx delivery in your area.  Try one of these options instead!"
+//Possible TODO:  If google maps returns no results on new search, say something like "Sorry, there are no places currently open that offer xxx delivery in your area.  Try one of these options instead!"
 //...then return a much more generic search for any delivery food nearby
 
-//TODO:  add command to remove old mapmarkers (put in new search function)
-
-//TODO:  Add in brief description of what app does in the summary popup/modal (find 5 movies plus a bonus option from the last person to use this site, and up to 5 nearby places that deliver a type of food that fits your movie genre!)
+//Possible TODO:  Add in brief description of what app does in the summary popup/modal (find 5 movies plus a bonus option from the last person to use this site, and up to 5 nearby places that deliver a type of food that fits your movie genre!)
 
       // This example requires the Places library. Include the libraries=places
       // parameter when you first load the API. For example:
       // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-//TODO:  Currently could only be rolled out in urban areas - would need to detect and expand delivery searchers for rural/suburban areas (or else not enough close by results for specific food types)
+//Possible TODO:  Currently could only be rolled out in urban areas - would need to detect and expand delivery searchers for rural/suburban areas (or else not enough close by results for specific food types)
 
 //Firebase Config
 var config = {
@@ -28,7 +25,7 @@ var config = {
 firebase.initializeApp(config);
 
 var dataRef = firebase.database();
-var firebaseMovie; //TODO:  Set this equal to movie object in firebase (initial snapshot)
+var firebaseMovie; 
 
 //GOOGLE MAPS global variables
 var map;
@@ -220,7 +217,7 @@ function searchNewLocation(referenceLocation){
     location: referenceLocation,
     radius: 800,
     // openNow: true,  OPTIONAL:  Could uncomment this in future - Could be helpful, but extremely limits results.
-    keyword: foodChoice, // TODO: take in a variable for food, random selection from food arrays
+    keyword: foodChoice, 
     type: ['meal_delivery']
     //futureTODO:  If not enough results come back, instead search results for type: [meal_takeaway], or any generic delivery
   };
@@ -283,7 +280,7 @@ $(document).ready(function() {
   function chooseMovieFromApi (apiResults) {
     var randomArrayPosition = (Math.floor(Math.random() * searchSelectOptions.length));
     var searchSelect = searchSelectOptions[randomArrayPosition]; //chooses random movie
-    // console.log(searchSelect);  //this is just a test to make sure its working TODO: remove in final
+    // console.log(searchSelect);  //this is just a test to make sure its working 
     // console.log("apiResults:"+  apiResults);
     movieSelect = apiResults.results[searchSelect];
     movieChoices.push(movieSelect);
@@ -321,7 +318,7 @@ $(document).ready(function() {
     
     if ($("#autocomplete-field").val() === ''){      
       locationSubmitted = false;
-      //TODO:  Replace address text with a message prompting user to insert a location if they want food options.
+      //Possible TODO:  Replace address text with a message prompting user to insert a location if they want food options.
       //return false;  -- this would also stop movies reloading if we want a firm prompt
     }
 
@@ -360,8 +357,8 @@ $(document).ready(function() {
 
     // console.log ("random food position: " + Math.floor(Math.random()*foodArray.length));
     foodChoice = foodArray[Math.floor(Math.random()*foodArray.length)]
-    console.log ("Your food for this movie is: " + foodChoice);
-    //TODO:  put the above in a display div
+    //console.log ("Your food for this movie is: " + foodChoice);
+    //Possible TODO:  put the above in a display div
     $("#form-submit").text("Your food for the evening is " + foodChoice + "! Don't like your options? Click here to try again!")
 
 
