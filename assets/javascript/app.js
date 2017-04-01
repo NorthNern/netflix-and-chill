@@ -28,7 +28,7 @@ var config = {
 firebase.initializeApp(config);
 
 var dataRef = firebase.database();
-
+var firebaseMovie; //TODO:  Set this equal to movie object in firebase (initial snapshot)
 
 //GOOGLE MAPS global variables
 var map;
@@ -81,7 +81,7 @@ var foodArrayDocumentary = ["asian", "chinese", "indian", "vegetarian"];  //ethn
 var foodArrayAnimation = ["fast food", "mexican", "pizza"];  //family foods?
 var foodArrayDrama = ["asian", "deli", "healthy", "pasta", "sushi", "steak"]; //filling meals?  
 var lastMovie;
-var firebaseMovie;
+var firebaseMovieToDisplay;
 var locationSubmitted = true;
 
 
@@ -236,6 +236,16 @@ function searchNewLocation(referenceLocation){
 
 //document.ready interferes with google functions (google loads on page start already) so only included below
 $(document).ready(function() {
+  //gets data on last movie searched in fireBase
+  // dataRef.ref().on("child_added", function(childSnapshot) {
+  dataRef.ref().on("value", function(snapshot) {
+
+        firebaseMovie = snapshot.val();
+        console.log(firebaseMovie);
+        } , function(errorObject) {
+      console.log("The read failed: " + errorObject.code);
+    });
+
 
   //When the user clicks the popcorn button the modal and popcorn button fade out and the form appears
   $(".popcornBtn").on("click", ".popcorn", function(){
@@ -310,6 +320,8 @@ $(document).ready(function() {
   theatreFirstDate = theatreFirstYear +'-' + theatreFirstMonth + '-' + dd;
 
   $(document).on("click", "#form-submit", function() {
+
+    firebaseMovieToDisplay = firebaseMovie.lastMovie;
     
     if ($("#autocomplete-field").val() === ''){      
       locationSubmitted = false;
@@ -388,6 +400,7 @@ $(document).ready(function() {
         method: 'GET'
       }).done(function(response) {
         movieChoices = []
+        console.log(firebaseMovieToDisplay)
         var movieRow = $("#movie-row");
         movieRow.empty();
         // console.log(queryURL)
@@ -407,8 +420,9 @@ $(document).ready(function() {
                 '<div class="poster">' + 
                 '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
                .appendTo("#movie"+i);
-   
-        lastMovie = movieChoices[i];
+        if (i === 0) {
+          lastMovie = movieChoices[i];
+        }
        // console.log(lastMovie);
 
           // $('#movies-appear-here').append('<li>' + movieSelect.title + '</li>'); //this is just a test
@@ -417,28 +431,19 @@ $(document).ready(function() {
           $('[data-toggle="popover"]').popover()
         }
 
-        movieRow
-               // 
-               .append($('<div class="col-sm-2 text-center wrapper">' + 
-                '<div class="poster">' + 
-                '<img src="' + posterPath + movieChoices[i].poster_path + '" data-toggle="popover" data-trigger="hover" title="' + movieChoices[i].title + '" data-content="' + movieChoices[i].overview + '"></div></div>'))
-               .appendTo("#movie"+i);
-
-        dataRef.ref().push({
+        // dataRef.ref().push({
+        //   lastMovie : lastMovie,
+        // });
+        dataRef.ref().set({
           lastMovie : lastMovie,
         });
-
-        dataRef.ref().on("child_added", function(childSnapshot) {
-        firebaseMovie = childSnapshot.val();
-        console.log(firebaseMovie);
+        
         movieRow
                // 
                .append($('<div class="col-sm-2 text-center wrapper">' + 
                 '<div class="poster">' + 
-                '<img src="' + posterPath + firebaseMovie.poster_path + '" data-toggle="popover" data-trigger="hover" title="' + firebaseMovie.title + '" data-content="' + firebaseMovie.overview + '"></div></div>'))
+                '<img src="' + posterPath + firebaseMovieToDisplay.poster_path + '" data-toggle="popover" data-trigger="hover" title="' + firebaseMovieToDisplay.title + '" data-content="' + firebaseMovieToDisplay.overview + '"></div></div>'))
                .appendTo("#movie"+5);
-
-        });
       });
     });
   });
