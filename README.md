@@ -54,7 +54,7 @@ PLEASE NOTE:  Users will need to be connected to the internet for website testin
 3. Click on the popcorn to get started, then enter an address and select a movie genre.  
 4. Click the 'submit' button to get your movie/dinner results.  
 5. Hover over a movie for more information, and click on any of the map markers for additional restaurant details, including rating, phone number, and website.  
-6. Click the refresh button to get a new set of movies and food delivery options.
+6. Click the 'try again' button to get a new set of movies and food delivery options.
 
 PLEASE NOTE:  Currently the food delivery option part of the site runs best if user limits testing to urban areas, where plenty of restaurants for various food types are marked with delivery available through the Google Maps API.  In the future, we would consider adding results for more generic deliveries as well as restaurants offering carryout or a larger search in order to better include rural/suburban users.
 
@@ -71,7 +71,7 @@ In particular, the following are the main files we built out in this project:
 * /assets/css/style.css - Customized styling to expand on basic bootstrap functionality, including the opening curtains on page load and google map appearance
 * /assets/javascript/app.js - Background functionality, including TheMovieDB and Google Maps API interactions, movies chosen by a 'weighted' random function (more popular movies chosen more often), and firebase storage of a movie from the previous search.
 
-If you have any questions about how/why something works, please feel free to contact a member of the [Project Team](https://github.com/trgmedina/netflix-and-chill/graphs/contributors) for details. 
+If you have any questions about how/why something works, feel free to contact a member of the [Project Team](https://github.com/trgmedina/netflix-and-chill/graphs/contributors) for details. 
 
 ## Authors
 
