@@ -1,6 +1,4 @@
-# Project Title
-
-Dinner and a Movie
+# Dinner and a Movie
 
 ## Description
 
@@ -49,19 +47,19 @@ Nearby Delivery Option Details:
 
 Clone or download the repository to your desktop.
 
-### Prerequisities
+### Prerequisites
 
-Google Chrome web browser for testing the web page, and Sublime (or another tool) for viewing/editing the code.
+Users will need Google Chrome web browser for testing the web page, and Sublime (or another tool) for viewing/editing the code.
 
 PLEASE NOTE:  Users will need to be connected to the internet for website testing to function properly, as this site relies heavily on API calls for movie information and food delivery options.  
 
-## Running the tests
+## Testing the Website
 
 1. Run index.html to open up the website.  
 2. Enable location services (if requested), in order to allow address autofill to complete based on your current location.  
 3. Click on the popcorn to get started, then enter an address and select a movie genre.  
-4. Click the 'submit' button to get your movie/dinner results.  
-5. Hover over a movie for more information, and click on any of the map markers for additional restaurant details, including rating, phone number, and website.  
+4. Click the 'see your options' button to get your movie/dinner results.  Five movie results will be for the genre you chose, while the sixth 'bonus option' will be pulled from Firebase as a movie from the last search performed on our site.
+5. Hover over a movie for more information, and click on any of the map markers for additional restaurant details, including rating, phone number, and website (or a google page for the restaurant if they haven't listed a website).  
 6. Click the 'try again' button to get a new set of movies and food delivery options.
 
 PLEASE NOTE:  Currently the food delivery option part of the site runs best if user limits testing to urban areas, where plenty of restaurants for various food types are marked with delivery available through the Google Maps API.  In the future, we would consider adding results for more generic deliveries as well as restaurants offering carryout or a larger search in order to better include rural/suburban users.
