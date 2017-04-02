@@ -79,7 +79,7 @@ If you have any questions about how/why something works, feel free to contact a 
 * **Susan Heiniger** - [SusanArend](https://github.com/SusanArend)
 * **Adam McNerney** - [NorthNern](https://github.com/NorthNern)
 * **Theresa Medina** - [trgmedina](https://github.com/trgmedina)
-* **Giana Mirabelli** - [giannamirabelli16](https://github.com/giannamirabelli16)
+* **Gianna Mirabelli** - [giannamirabelli16](https://github.com/giannamirabelli16)
 
 See also the list of [contributors](https://github.com/trgmedina/netflix-and-chill/graphs/contributors) who participated in this project.
 
