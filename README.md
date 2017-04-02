@@ -2,6 +2,14 @@
 
 Dinner and a Movie
 
+## Description
+
+Dinner and a Movie provides users with a quick and easy way to enjoy a meal and film from the comfort of their couch with the click of a button.  Simply enter the genre of the movie you want to watch, along with your address (which conveniently autofills based on your location).  Our website will generate a short selection of movies and delivery options to choose from, easily refreshable with another button click.
+
+The movies are chosen based on the top 500 most popular films in a genre, with more popular movies more likely to be chosen, and the delivery options will vary according to the genre of the film you select - an action movie might result in pizza or buffalo wings, while a documentary might result in vegetarian or Chinese options.
+
+The site is simple and minimalistic by design, allowing users to quickly decide on their evenings entertainment without worrying about which of the dozens of delivery places and hundreds of popular movies they want to see; Choosing from a mere handful of quality options makes things easy and worryfree.  Just give the app a try, and enjoy your Dinner and a Movie!
+
 ## Screenshots
 Home Page:
 ![](http://imgur.com/xh7WQPa.png)
