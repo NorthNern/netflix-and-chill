@@ -4,7 +4,7 @@
 
 Dinner and a Movie provides users with a quick and easy way to enjoy a meal and film from the comfort of their couch with the click of a button.  Simply enter the genre of the movie you want to watch, along with your address (which conveniently autofills based on your location).  Our website will generate a short selection of movies and delivery options to choose from, which is easily refreshable with another button click.
 
-The movies are chosen based on the top 500 most popular films in a genre, with more popular movies more likely to be chosen. The delivery options will vary according to the genre of the film you select - an action movie might result in pizza or buffalo wings, while a documentary could result in vegetarian or Chinese recommendations.
+The movies are chosen based on the top 500 most popular films in a genre, with more popular movies more likely to be chosen. The delivery options will vary according to the genre of the film you select - an action movie might result in pizza or buffalo wings, while a documentary could result in vegetarian or Chinese delivery recommendations.
 
 The site is simple and minimalistic by design, allowing users to quickly decide on their evening's entertainment.  Our app bypasses the effort of scrounging up menus for the dozens of local delivery places, or stressing over which of the hundreds of popular movies a user really wants to see; Choosing from a mere handful of quality options makes things easy and worryfree.  Just give the app a try, and enjoy your Dinner and a Movie!
 
@@ -25,23 +25,22 @@ Nearby Delivery Option Details:
 ![](http://imgur.com/msTr3Lp.png)
 
 
-## Languages used:
+## Languages/Libraries Used
 * HTML
 * CSS
-* Bootstrap
+* Twitter Bootstrap
 * Javascript
-* JQuery Library
+* jQuery Library
 * Google Maps Library
 * Google Maps 'Places' Library
 
-## Technologies used
-- Twitter Bootstrap
-- Modals
-- Popovers
-- Firebase
-- TheMovieDB API
-- Google Maps API
-- Google Maps Geolocation
+## Technologies Used
+* TheMovieDB API
+* Google Maps API
+* Google Maps Geolocation
+* Bootstrap Modals
+* Bootstrap Popovers
+* Firebase
 
 ## Getting Started
 
