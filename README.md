@@ -71,7 +71,7 @@ In particular, the following are the main files we built out in this project:
 * /assets/css/style.css - Customized styling to expand on basic bootstrap functionality, including the opening curtains on page load and google map appearance
 * /assets/javascript/app.js - Background functionality, including TheMovieDB and Google Maps API interactions, movies chosen by a 'weighted' random function (more popular movies chosen more often), and firebase storage of a movie from the previous search.
 
-If you have any questions about how/why something works, please feel free to contact a member of the [Project Team](https://github.com/your/project/contributors) for details. 
+If you have any questions about how/why something works, please feel free to contact a member of the [Project Team](https://github.com/trgmedina/netflix-and-chill/graphs/contributors) for details. 
 
 ## Authors
 
@@ -81,7 +81,7 @@ If you have any questions about how/why something works, please feel free to con
 * **Theresa Medina** - [trgmedina](https://github.com/trgmedina)
 * **Giana Mirabelli** - [giannamirabelli16](https://github.com/giannamirabelli16)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/trgmedina/netflix-and-chill/graphs/contributors) who participated in this project.
 
 ## Acknowledgments
 
