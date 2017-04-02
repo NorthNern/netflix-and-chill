@@ -4,11 +4,11 @@ Dinner and a Movie
 
 ## Description
 
-Dinner and a Movie provides users with a quick and easy way to enjoy a meal and film from the comfort of their couch with the click of a button.  Simply enter the genre of the movie you want to watch, along with your address (which conveniently autofills based on your location).  Our website will generate a short selection of movies and delivery options to choose from, easily refreshable with another button click.
+Dinner and a Movie provides users with a quick and easy way to enjoy a meal and film from the comfort of their couch with the click of a button.  Simply enter the genre of the movie you want to watch, along with your address (which conveniently autofills based on your location).  Our website will generate a short selection of movies and delivery options to choose from, which is easily refreshable with another button click.
 
-The movies are chosen based on the top 500 most popular films in a genre, with more popular movies more likely to be chosen, and the delivery options will vary according to the genre of the film you select - an action movie might result in pizza or buffalo wings, while a documentary might result in vegetarian or Chinese options.
+The movies are chosen based on the top 500 most popular films in a genre, with more popular movies more likely to be chosen. The delivery options will vary according to the genre of the film you select - an action movie might result in pizza or buffalo wings, while a documentary could result in vegetarian or Chinese recommendations.
 
-The site is simple and minimalistic by design, allowing users to quickly decide on their evenings entertainment without worrying about which of the dozens of delivery places and hundreds of popular movies they want to see; Choosing from a mere handful of quality options makes things easy and worryfree.  Just give the app a try, and enjoy your Dinner and a Movie!
+The site is simple and minimalistic by design, allowing users to quickly decide on their evening's entertainment.  Our app bypasses the effort of scrounging up menus for the dozens of local delivery places, or stressing over which of the hundreds of popular movies a user really wants to see; Choosing from a mere handful of quality options makes things easy and worryfree.  Just give the app a try, and enjoy your Dinner and a Movie!
 
 ## Screenshots
 Home Page:
@@ -71,8 +71,8 @@ PLEASE NOTE:  Currently the food delivery option part of the site runs best if u
 * Sublime
 * Heroku (for initial website test deployment)
 
-## Walk throughs of code
-Please refer to the repository code for examples, sections are commented to indicate their functionality. 
+## Code Walkthrough
+Please refer to the repository files for coding samples; The sections are commented to indicate their functionality. 
 
 In particular, the following are the main files we built out in this project:
 * index.html - Basic website design, including the popcorn button, input forms, and overall layout.
@@ -95,5 +95,5 @@ See also the list of [contributors](https://github.com/trgmedina/netflix-and-chi
 
 * Hat tip to anyone whose code was used
 * Inspiration from everyone who has ever used the words 'netflix and chill'
-* Gratitude to the NU Coding Boot Camp Team
+* Gratitude to the NU Coding Boot Camp team
 * etc.
