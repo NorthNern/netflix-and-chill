@@ -68,7 +68,7 @@ Please refer to the repository code for examples, sections are commented to indi
 
 In particular, the following are the main files we built out in this project:
 * index.html - Basic website design, including the popcorn button, input forms, and overall layout.
-* /assets/css/style.css - Customized styling to expand on basic bootstrap functionality, including the opening curtains on page load and google map appearance
+* /assets/css/style.css - Customized styling to expand on basic bootstrap functionality, including the opening curtains on page load and google map appearance.
 * /assets/javascript/app.js - Background functionality, including TheMovieDB and Google Maps API interactions, movies chosen by a 'weighted' random function (more popular movies chosen more often), and firebase storage of a movie from the previous search.
 
 If you have any questions about how/why something works, feel free to contact a member of the [Project Team](https://github.com/trgmedina/netflix-and-chill/graphs/contributors) for details. 
